@@ -10,13 +10,24 @@ const LocalStrategy = require('passport-local').Strategy
 const User = require('./auth/models/user')
 const mongoose = require('mongoose')
 const MongoStore = require('connect-mongo')(session)
-const expressValidator = require('express-validator')
+const cors = require('cors')
 
 // environment variables
 require('dotenv').config()
 const OUTLOOK_CLIENT_ID = process.env.OUTLOOK_CLIENT_ID
 const OUTLOOK_CLIENT_SECRET = process.env.OUTLOOK_CLIENT_SECRET
 const MONGO_URI = process.env.MONGODB_URI
+
+// connect to mongo
+mongoose.set('useFindAndModify', false)
+mongoose.set('useCreateIndex', true)
+mongoose.connect(MONGO_URI)
+mongoose.connection.on('error', (err) => {
+  console.error(err)
+  console.log('%s MongoDB connection error. Please make sure MongoDB is running.', chalk.red('✗'))
+  process.exit()
+})
+const db = mongoose.connection
 
 // configure passport
 passport.serializeUser(function (user, done) {
@@ -25,6 +36,7 @@ passport.serializeUser(function (user, done) {
 passport.deserializeUser(function (obj, done) {
   done(null, obj)
 })
+
 // ... for city users
 passport.use(new OutlookStrategy({
     clientID: OUTLOOK_CLIENT_ID,
@@ -33,64 +45,68 @@ passport.use(new OutlookStrategy({
     proxy: true
   },
   function (accessToken, refreshToken, profile, done) {
-    process.nextTick(function () {
-      return done(null, profile)
-    })
+    return done(null, profile)
   }
 ))
+
 // ... for non-city users
 passport.use(new LocalStrategy({
-    usernameField: 'email'
-  }, (email, password, done) => {
-    User.findOne({
-      email: email.toLowerCase()
-    }, (err, user) => {
+  usernameField: 'email'
+}, (email, password, done) => {
+  User.findOne({
+    email: email.toLowerCase()
+  }, (err, user) => {
+    if (err) {
+      return done(err)
+    }
+    if (!user) {
+      return done(null, false, {
+        msg: `Email ${email} not found.`
+      })
+    }
+    user.comparePassword(password, (err, isMatch) => {
       if (err) {
-        return done(err);
+        return done(err)
       }
-      if (!user) {
-        return done(null, false, {
-          msg: `Email ${email} not found.`
-        });
+      if (isMatch) {
+        return done(null, user)
       }
-      user.comparePassword(password, (err, isMatch) => {
-        if (err) {
-          return done(err);
-        }
-        if (isMatch) {
-          return done(null, user);
-        }
-        return done(null, false, {
-          msg: 'Invalid email or password.'
-        });
-      });
-    });
-  }));
+      return done(null, false, {
+        msg: 'Invalid email or password.'
+      })
+    })
+  })
+}))
 
-// connect to mongo
-mongoose.connect(MONGO_URI)
-mongoose.connection.on('error', (err) => {
-  console.error(err)
-  console.log('%s MongoDB connection error. Please make sure MongoDB is running.', chalk.red('✗'))
-  process.exit()
-})
+// cookie config
+const cookieExpirationDate = new Date()
+const cookieExpirationDays = 365
+cookieExpirationDate.setDate(cookieExpirationDate.getDate() + cookieExpirationDays)
 
 // configure express
 const app = express()
 app.set('views', __dirname + '/auth/views')
 app.set('view engine', 'ejs')
-app.use(cookieParser())
-app.use(bodyParser())
+app.use(cookieParser('asdf33g4w4hghjkuil8saef345'))
+app.use(bodyParser.urlencoded({
+  extended: true
+}))
 app.use(methodOverride())
 app.use(session({
-  secret: 'mmmmmCOOKIES',
+  secret: 'asdf33g4w4hghjkuil8saef345',
+  // resave: true,
+  // saveUninitialized: true,
   cookie: {
-    _expires: (720 * 60 * 1000)
-  }
+    expires: cookieExpirationDate
+  },
+  store: new MongoStore({
+    mongooseConnection: db
+  })
 }))
 app.use(passport.initialize())
 app.use(passport.session())
 app.use(express.static(__dirname + '/auth/assets'))
+app.use(cors())
 
 /*
 Endpoints!!
@@ -98,33 +114,44 @@ Only one to retrieve email
 */
 
 // returns user's email address
-app.use('/getUser', function (req, res) {
+app.get('/getUser', function (req, res) {
   res.status(200).send({
-    "user": req.user.emails[0].value
+    'user': req.user.emails[0].value
   })
 })
 
-/*
-Routes!!
-The auth workflow is handled server side
-Once user is validated with pgh email address, 
-the react app is delivered to client and all further
-routing occurs there via wildcard
-*/
+/**
+ * auth routing
+ */
+
+const userController = require('./auth/controllers/user')
+app.post('/login', userController.postLogin)
+app.get('/forgot', userController.getForgot)
+app.post('/forgot', userController.postForgot)
+app.get('/reset/:token', userController.getReset)
+app.post('/reset/:token', userController.postReset)
+app.get('/signup', userController.getSignup)
+app.post('/signup', userController.postSignup)
+
+/**
+ * all other routing
+ */
 
 // login page
 app.get('/login', function (req, res) {
   req.logout()
-  res.render('login', {
-    user: req.user
-  })
+  res.render('login')
 })
 
 // logout endpoint, called from client
 // logs out user and redirects to login page
 app.get('/logout', function (req, res) {
   req.logout()
-  res.redirect('/login')
+  req.session.destroy((err) => {
+    if (err) console.log('Error : Failed to destroy the session during logout.', err)
+    req.user = null
+    res.redirect('/login')
+  })
 })
 
 // 401 page
@@ -146,11 +173,15 @@ app.get('/signin-microsoft',
   passport.authenticate('windowslive', {
     failureRedirect: '/login'
   }),
-  function (req, res) {
+  function (req, res, next) {
     // if user has pgh emal address, let through the gates
     if (req.user.emails[0].value.includes('@pittsburghpa.gov')) {
-      res.locals.user = req.user
-      res.redirect('/')
+      req.logIn(req.user, function (error) {
+        if (error) {
+          return next(error)
+        }
+        return res.redirect('/')
+      })
     } else { // otherwise, get lost!
       res.redirect('/accessDenied')
     }
