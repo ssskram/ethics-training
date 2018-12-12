@@ -6,7 +6,6 @@ const session = require('express-session')
 const bodyParser = require('body-parser')
 const cookieParser = require('cookie-parser')
 const MongoStore = require('connect-mongo')(session)
-const flash = require('express-flash')
 const path = require('path')
 const mongoose = require('mongoose')
 const passport = require('passport')
@@ -34,8 +33,6 @@ const app = express()
 /**
  * Connect to MongoDB.
  */
-mongoose.set('useFindAndModify', false)
-mongoose.set('useCreateIndex', true)
 mongoose.connect(process.env.MONGODB_URI)
 mongoose.connection.on('error', (err) => {
   console.error(err)
@@ -60,38 +57,49 @@ app.use(session({
   resave: true,
   saveUninitialized: true,
   secret: process.env.SESSION_SECRET,
-  cookie: { maxAge: 1209600000 }, // two weeks in milliseconds
+  cookie: {
+    maxAge: 1209600000
+  }, // two weeks in milliseconds
   store: new MongoStore({
     url: process.env.MONGODB_URI,
-    autoReconnect: true,
+    autoReconnect: true
   })
 }))
 app.use(passport.initialize())
 app.use(passport.session())
-app.use(flash())
 app.use((req, res, next) => {
   res.locals.user = req.user
   next()
 })
 app.use((req, res, next) => {
   // After successful login, redirect back to the intended page
-  if (!req.user
-    && req.path !== '/login'
-    && req.path !== '/signup'
-    && !req.path.match(/^\/auth/)
-    && !req.path.match(/\./)) {
+  if (!req.user &&
+    req.path !== '/login' &&
+    req.path !== '/signup' &&
+    !req.path.match(/^\/auth/) &&
+    !req.path.match(/\./)) {
     req.session.returnTo = req.originalUrl
-  } else if (req.user
-    && (req.path === '/account' || req.path.match(/^\/api/))) {
+  } else if (req.user &&
+    (req.path === '/account' || req.path.match(/^\/api/))) {
     req.session.returnTo = req.originalUrl
   }
   next()
 })
-app.use('/', express.static(path.join(__dirname, 'public'), { maxAge: 31557600000 }))
-app.use('/js/lib', express.static(path.join(__dirname, 'node_modules/popper.js/dist/umd'), { maxAge: 31557600000 }))
-app.use('/js/lib', express.static(path.join(__dirname, 'node_modules/bootstrap/dist/js'), { maxAge: 31557600000 }))
-app.use('/js/lib', express.static(path.join(__dirname, 'node_modules/jquery/dist'), { maxAge: 31557600000 }))
-app.use('/webfonts', express.static(path.join(__dirname, 'node_modules/@fortawesome/fontawesome-free/webfonts'), { maxAge: 31557600000 }))
+app.use('/', express.static(path.join(__dirname, 'public'), {
+  maxAge: 31557600000
+}))
+app.use('/js/lib', express.static(path.join(__dirname, 'node_modules/popper.js/dist/umd'), {
+  maxAge: 31557600000
+}))
+app.use('/js/lib', express.static(path.join(__dirname, 'node_modules/bootstrap/dist/js'), {
+  maxAge: 31557600000
+}))
+app.use('/js/lib', express.static(path.join(__dirname, 'node_modules/jquery/dist'), {
+  maxAge: 31557600000
+}))
+app.use('/webfonts', express.static(path.join(__dirname, 'node_modules/@fortawesome/fontawesome-free/webfonts'), {
+  maxAge: 31557600000
+}))
 
 /**
  * Primary app routes.

@@ -25,7 +25,7 @@ passport.use(new LocalStrategy({ usernameField: 'email' }, (email, password, don
     user.comparePassword(password, (err, isMatch) => {
       if (err) { return done(err); }
       if (isMatch) {
-        console.log(user)
+        console.log('good one')
         return done(null, user);
       }
       return done(null, false, { msg: 'Invalid email or password.' });
@@ -41,17 +41,4 @@ exports.isAuthenticated = (req, res, next) => {
     return next();
   }
   res.redirect('/login');
-};
-
-/**
- * Authorization Required middleware.
- */
-exports.isAuthorized = (req, res, next) => {
-  const provider = req.path.split('/').slice(-1)[0];
-  const token = req.user.tokens.find(token => token.kind === provider);
-  if (token) {
-    next();
-  } else {
-    res.redirect(`/auth/${provider}`);
-  }
 };
