@@ -25,6 +25,7 @@ passport.use(new LocalStrategy({ usernameField: 'email' }, (email, password, don
     user.comparePassword(password, (err, isMatch) => {
       if (err) { return done(err); }
       if (isMatch) {
+        console.log(user)
         return done(null, user);
       }
       return done(null, false, { msg: 'Invalid email or password.' });
