@@ -1,0 +1,38 @@
+/* Buttons
+/* ------------------------- */
+
+.btn {
+    z-index: 0 !important;
+    white-space: normal;
+}
+
+.btn-success,
+.btn-danger,
+.btn-primary,
+.btn-info,
+.btn-warning {
+    margin: 10px 5px;
+    font-size: 18px;
+    color: #fffcf5;
+    font-family: 'Raleway', sans-serif;
+    letter-spacing: 2px !important;
+}
+
+.btn.disabled,
+.btn[disabled],
+fieldset[disabled] .btn {
+    /* font */
+    color: #383838;
+    font-size: 18px;
+    font-family: 'Raleway', sans-serif;
+    /* remove blue underline */
+    text-decoration: none;
+    /* border */
+    border: 0px;
+    /* transitions */
+    transition: all .3s ease 0s;
+    /* other */
+    background-color: rgba(202, 205, 206, .35);
+    padding: 10px 30px;
+    margin: 7px;
+}

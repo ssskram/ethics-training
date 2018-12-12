@@ -1,0 +1,31 @@
+/* Alerts
+/* ------------------------- */
+
+.alert {
+    border-width: 0 0 0 10px;
+}
+
+.alert-info {
+    border-color: #31708f;
+}
+
+.alert-success {
+    background-color: rgba(92, 184, 92, .5);
+    border-color: #4cae4c;
+}
+
+.message-body {
+    font-weight: 600;
+}
+
+.alternativeprompt {
+    padding: 15px;
+    font-size: 20px !important;
+    text-align: center;
+}
+
+.topcorner {
+    position: absolute;
+    top: 0;
+    right: 0;
+}

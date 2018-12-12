@@ -1,0 +1,95 @@
+/* Input & headings
+/* ------------------------- */
+
+input[type=search]::-webkit-search-cancel-button {
+    -webkit-appearance: searchfield-cancel-button;
+}
+
+.form-h {
+    margin-left: 15px;
+}
+
+.form-element {
+    margin-bottom: 20px !important;
+}
+
+.form-control {
+    align-items: center;
+    background-color: hsl(0,0%,100%);
+    border-color: hsl(0,0%,80%);
+    border-radius: 4px;
+    border-style: solid;
+    border-width: 1px;
+    min-height: 38px;
+    outline: 0 !important;
+}
+
+textarea {
+    overflow: hidden;
+}
+
+.form {
+    overflow: visible;
+}
+
+/* Datepicker
+/* ------------------------- */
+
+.react-datepicker {
+    font-size: 1em;
+}
+
+.react-datepicker__header {
+    padding-top: 0.8em;
+}
+
+.react-datepicker__month {
+    margin: 0.4em 1em;
+}
+
+.react-datepicker__day-name,
+.react-datepicker__day {
+    width: 1.9em;
+    line-height: 1.9em;
+    margin: 0.166em;
+}
+
+.react-datepicker__current-month {
+    font-size: 1em;
+}
+
+.react-datepicker__navigation {
+    top: 1em;
+    line-height: 1.7em;
+    border: 0.45em solid transparent;
+}
+
+.react-datepicker__time-container {
+    width: 120px !important;
+}
+
+.react-datepicker__time {
+    width: 100% !important;
+}
+
+.react-datepicker__time-container .react-datepicker__time .react-datepicker__time-box {
+    width: 100% !important;
+}
+
+.btn-datepicker {
+    border-radius: 10px;
+    border: 1px solid #909090;
+    padding: 8px 15px !important;
+    height: auto;
+    line-height: 1.8;
+    color: #383838;
+    width: 100%;
+    text-align: left;
+    background-color: #fff;
+}
+
+.btn-datepicker:focus {
+    border-color: #66afe9;
+    outline: 0;
+    box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075), 0 0 8px rgba(102, 175, 233, .6);
+}
