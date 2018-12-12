@@ -22,11 +22,6 @@ const MONGO_URI = process.env.MONGODB_URI
 mongoose.set('useFindAndModify', false)
 mongoose.set('useCreateIndex', true)
 mongoose.connect(MONGO_URI)
-mongoose.connection.on('error', (err) => {
-  console.error(err)
-  console.log('%s MongoDB connection error. Please make sure MongoDB is running.', chalk.red('✗'))
-  process.exit()
-})
 const db = mongoose.connection
 
 // configure passport
@@ -45,7 +40,9 @@ passport.use(new OutlookStrategy({
     proxy: true
   },
   function (accessToken, refreshToken, profile, done) {
-    return done(null, profile)
+    process.nextTick(function () {
+      return done(null, profile)
+    })
   }
 ))
 
@@ -94,8 +91,8 @@ app.use(bodyParser.urlencoded({
 app.use(methodOverride())
 app.use(session({
   secret: 'asdf33g4w4hghjkuil8saef345',
-  // resave: true,
-  // saveUninitialized: true,
+  resave: true,
+  saveUninitialized: true,
   cookie: {
     expires: cookieExpirationDate
   },
@@ -173,14 +170,16 @@ app.get('/signin-microsoft',
   passport.authenticate('windowslive', {
     failureRedirect: '/login'
   }),
-  function (req, res, next) {
+  async function (req, res, next) {
     // if user has pgh emal address, let through the gates
     if (req.user.emails[0].value.includes('@pittsburghpa.gov')) {
-      req.logIn(req.user, function (error) {
-        if (error) {
-          return next(error)
+      await req.logIn(req.user, (err) => {
+        if (err) {
+          return next(err)
         }
-        return res.redirect('/')
+      })
+      req.session.save(() => {
+        res.redirect('/')
       })
     } else { // otherwise, get lost!
       res.redirect('/accessDenied')
@@ -206,6 +205,8 @@ app.get('*', ensureAuthenticated, (req, res) => {
 
 // helper function to validate user on every route
 function ensureAuthenticated(req, res, next) {
+  console.log('here')
+  console.log(req.isAuthenticated())
   if (req.isAuthenticated()) {
     return next()
   }
