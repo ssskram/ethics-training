@@ -33,22 +33,14 @@ exports.postLogin = (req, res, next) => {
     if (!user) {
       return res.redirect('/login')
     }
-    await req.logIn(user, (err) => {
+    await req.logIn(req.user, (err) => {
       if (err) {
         return next(err)
       }
-      req.session.save()
     })
-    const loggedIn = () => {
-      if (req.user) {
-        console.log('user in session')
-        res.redirect('/account')
-      } else {
-        console.log('user not in session yet')
-        loggedIn()
-      }
-    }
-    loggedIn()
+    req.session.save(() => {
+      res.redirect('/')
+    })
   })(req, res, next)
 }
 
