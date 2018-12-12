@@ -2,27 +2,18 @@
  * Module dependencies.
  */
 const express = require('express')
-const compression = require('compression')
 const session = require('express-session')
 const bodyParser = require('body-parser')
-const logger = require('morgan')
-const chalk = require('chalk')
-const errorHandler = require('errorhandler')
-const lusca = require('lusca')
-const dotenv = require('dotenv')
+const cookieParser = require('cookie-parser')
 const MongoStore = require('connect-mongo')(session)
 const flash = require('express-flash')
 const path = require('path')
 const mongoose = require('mongoose')
 const passport = require('passport')
 const expressValidator = require('express-validator')
-const expressStatusMonitor = require('express-status-monitor')
 const sass = require('node-sass-middleware')
-
-/**
- * Load environment variables from .env file, where API keys and passwords are configured.
- */
-dotenv.load({ path: '.env' })
+const methodOverride = require('method-override')
+require('dotenv').config()
 
 /**
  * Controllers (route handlers).
@@ -57,15 +48,13 @@ mongoose.connection.on('error', (err) => {
  */
 app.set('views', path.join(__dirname, 'views'))
 app.set('view engine', 'pug')
-app.use(expressStatusMonitor())
-app.use(compression())
+app.use(cookieParser())
+app.use(bodyParser())
+app.use(methodOverride())
 app.use(sass({
   src: path.join(__dirname, 'public'),
   dest: path.join(__dirname, 'public')
 }))
-app.use(logger('dev'))
-app.use(bodyParser.json())
-app.use(bodyParser.urlencoded({ extended: true }))
 app.use(expressValidator())
 app.use(session({
   resave: true,
@@ -80,9 +69,6 @@ app.use(session({
 app.use(passport.initialize())
 app.use(passport.session())
 app.use(flash())
-app.use(lusca.xframe('SAMEORIGIN'))
-app.use(lusca.xssProtection(true))
-app.disable('x-powered-by')
 app.use((req, res, next) => {
   res.locals.user = req.user
   next()
