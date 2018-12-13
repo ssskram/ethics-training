@@ -6,6 +6,7 @@ const bodyParser = require('body-parser')
 const methodOverride = require('method-override')
 const passport = require('passport')
 const mongoose = require('mongoose')
+const flash = require('express-flash')
 const MongoStore = require('connect-mongo')(session)
 
 // passport config
@@ -47,6 +48,7 @@ app.use(session({
 }))
 app.use(passport.initialize())
 app.use(passport.session())
+app.use(flash())
 app.use(express.static(__dirname + '/auth/assets'))
 
 // external users
@@ -56,7 +58,7 @@ app.post('/login', externalUser.postLogin)
 app.get('/forgotPassword', externalUser.getForgot)
 app.post('/forgotPassword', externalUser.postForgot)
 app.get('/reset/:token', externalUser.getReset)
-app.post('/reset/:token', externalUser.postReset)
+app.post('/reset', externalUser.postReset)
 app.get('/newAccount', externalUser.getSignup)
 app.post('/newAccount', externalUser.postSignup)
 

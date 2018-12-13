@@ -2,10 +2,13 @@ const {
   promisify
 } = require('util')
 const crypto = require('crypto')
-const nodemailer = require('nodemailer')
 const passport = require('passport')
 const User = require('../models/user')
 const randomBytesAsync = promisify(crypto.randomBytes)
+
+// sendgrid
+const sgMail = require('@sendgrid/mail')
+sgMail.setApiKey(process.env.SENDGRID)
 
 // login
 exports.getLoginForm = (req, res) => {
@@ -88,29 +91,21 @@ exports.getReset = (req, res, next) => {
         return next(err)
       }
       if (!user) {
-        return res.redirect('/forgot')
+        return res.redirect('/forgotPassword')
       }
-      res.render('account/reset', {
-        title: 'Password Reset'
+      console.log('here')
+      res.render('reset', {
+        token: req.params.token
       })
     })
 }
 
 // process password reset
 exports.postReset = (req, res, next) => {
-  req.assert('password', 'Password must be at least 4 characters long.').len(4)
-  req.assert('confirm', 'Passwords must match.').equals(req.body.password)
-
-  const errors = req.validationErrors()
-
-  if (errors) {
-    return res.redirect('back')
-  }
-
   const resetPassword = () =>
     User
     .findOne({
-      passwordResetToken: req.params.token
+      passwordResetToken: req.body.token
     })
     .where('passwordResetExpires').gt(Date.now())
     .then((user) => {
@@ -134,38 +129,13 @@ exports.postReset = (req, res, next) => {
     if (!user) {
       return
     }
-    let transporter = nodemailer.createTransport({
-      service: 'SendGrid',
-      auth: {
-        user: process.env.SENDGRID_USER,
-        pass: process.env.SENDGRID_PASSWORD
-      }
-    })
-    const mailOptions = {
+    const msg = {
       to: user.email,
-      from: 'user.email',
+      from: 'Support@pghethicstraining.com',
       subject: 'Your PGH Ethics Training password has been changed',
       text: `Hello,\n\nThis is a confirmation that the password for your account ${user.email} has just been changed.\n`
     }
-    return transporter.sendMail(mailOptions)
-      .catch((err) => {
-        if (err.message === 'self signed certificate in certificate chain') {
-          console.log('WARNING: Self signed certificate in certificate chain. Retrying with the self signed certificate. Use a valid certificate if in production.')
-          transporter = nodemailer.createTransport({
-            service: 'SendGrid',
-            auth: {
-              user: process.env.SENDGRID_USER,
-              pass: process.env.SENDGRID_PASSWORD
-            },
-            tls: {
-              rejectUnauthorized: false
-            }
-          })
-          return transporter.sendMail(mailOptions)
-        }
-        console.log('ERROR: Could not send password reset confirmation email after security downgrade.\n', err)
-        return err
-      })
+    sgMail.send(msg)
   }
 
   resetPassword()
@@ -178,7 +148,6 @@ exports.postReset = (req, res, next) => {
 
 // forgot password
 exports.getForgot = (req, res) => {
-  console.log('here')
   if (req.isAuthenticated()) {
     return res.redirect('/')
   }
@@ -187,16 +156,6 @@ exports.getForgot = (req, res) => {
 
 // post forgot password
 exports.postForgot = (req, res, next) => {
-  req.assert('email', 'Please enter a valid email address.').isEmail()
-  req.sanitize('email').normalizeEmail({
-    gmail_remove_dots: false
-  })
-
-  const errors = req.validationErrors()
-
-  if (errors) {
-    return res.redirect('/forgot')
-  }
 
   const createRandomToken = randomBytesAsync(16)
     .then(buf => buf.toString('hex'))
@@ -215,51 +174,27 @@ exports.postForgot = (req, res, next) => {
       return user
     })
 
-  const sendForgotPasswordEmail = (user) => {
+  const sendForgotPasswordEmail = async (user) => {
     if (!user) {
       return
     }
     const token = user.passwordResetToken
-    let transporter = nodemailer.createTransport({
-      service: 'SendGrid',
-      auth: {
-        user: process.env.SENDGRID_USER,
-        pass: process.env.SENDGRID_PASSWORD
-      }
-    })
-    const mailOptions = {
+    const msg = {
       to: user.email,
-      from: user.email,
+      from: 'Support@pghethicstraining.com',
       subject: 'Reset your password on PGH Ethics Training',
-      text: `You are receiving this email because you (or someone else) have requested the reset of the password for your account.\n\n
+      text: `You are receiving this email because you have requested the reset of the password for your account.\n\n
         Please click on the following link, or paste this into your browser to complete the process:\n\n
         http://${req.headers.host}/reset/${token}\n\n
         If you did not request this, please ignore this email and your password will remain unchanged.\n`
     }
-    return transporter.sendMail(mailOptions)
-      .catch((err) => {
-        if (err.message === 'self signed certificate in certificate chain') {
-          console.log('WARNING: Self signed certificate in certificate chain. Retrying with the self signed certificate. Use a valid certificate if in production.')
-          transporter = nodemailer.createTransport({
-            service: 'SendGrid',
-            auth: {
-              user: process.env.SENDGRID_USER,
-              pass: process.env.SENDGRID_PASSWORD
-            },
-            tls: {
-              rejectUnauthorized: false
-            }
-          })
-          return transporter.sendMail(mailOptions)
-        }
-        console.log('ERROR: Could not send forgot password email after security downgrade.\n', err)
-        return err
-      })
+    await sgMail.send(msg)
+    req.flash('info', `An e-mail has been sent to ${user.email} with further instructions.`)
+    res.render('forgotPassword')
   }
 
   createRandomToken
     .then(setRandomToken)
     .then(sendForgotPasswordEmail)
-    .then(() => res.redirect('/forgot'))
     .catch(next)
 }

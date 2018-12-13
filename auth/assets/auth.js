@@ -1,4 +1,3 @@
-
 // check to see if browser is IE
 var isIE = !!navigator.userAgent.match(/Trident/g) || !!navigator.userAgent.match(/MSIE/g)
 if (isIE) {

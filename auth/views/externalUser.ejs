@@ -8,6 +8,7 @@
     <div class="row login">
         <form action="/login" method="post">
             <span style='font-size: 2.2em;'>Log in</span>
+            <img src="pgh.png" style='height: 75px; float: right;' />
             <div class="form-group" style='margin-top: 10px;'>
                 <label>Email address</label>
                 <input type="email" class="form-control" id="email" name="email" placeholder="Enter email" required>
@@ -20,12 +21,12 @@
             <button type="submit" class="btn btn-primary">Login</button>
             <a href='/forgotPassword' class='btn btn-link'>Forgot password?</a>
             <div class="form-group" style='margin-top: 25px;'>
-                <a href='/newAccount' class='btn btn-warning'>Don't have an account yet?<br /><b>Click here to create
-                        one</b></a>
+                <a href='/newAccount' class='btn btn-warning'>Don't have an account yet?<br /><b>Click here to create one</b></a>
             </div>
         </form>
     </div>
 </body>
 
 <% include ./partials/footer %>
+
 </html>
