@@ -6,24 +6,33 @@
 <body>
     <% include ./partials/loader %>
     <div class="row login">
-        <form action="/login" method="post">
+        <form action="/newAccount" method="post" class='col-md-12'>
+            <div class='col-md-12'>
+                <% include ./partials/flash %>
+            </div>
             <span style='font-size: 2.8em;'>Create a new account</span>
             <div class="form-group">
                 <label>Name</label>
-                <input class="form-control" id="name" name="name" placeholder="Enter full name">
+                <input class="form-control" id="name" name="name" placeholder="Full Name" required>
+            </div>
+            <div class="form-group">
+                <label>Organization</label>
+                <input class="form-control" id="organization" name="organization" placeholder="Board, Committee, Authority, etc.">
             </div>
             <div class="form-group">
                 <label>Email address</label>
-                <input type="email" class="form-control" id="email" name="email" placeholder="Enter email">
+                <input type="email" class="form-control" id="email" name="email" placeholder="Email Address" required>
                 <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else</small>
             </div>
             <div class="form-group">
                 <label">Password</label>
-                <input type="password" class="form-control" id="password" name="password" placeholder="Password">
+                    <input type="password" class="form-control" id="password" name="password" placeholder="Password"
+                        required>
             </div>
             <div class="form-group">
                 <label">Confirm Password</label>
-                <input type="password" class="form-control" id="confirmPassword" name="confirmPassword" placeholder="Confirm Password">
+                    <input type="password" class="form-control" id="confirmPassword" name="confirmPassword" placeholder="Confirm Password"
+                        required>
             </div>
             <button type="submit" class="btn btn-primary">Create account</button>
         </form>
@@ -31,4 +40,5 @@
 </body>
 
 <% include ./partials/footer %>
+
 </html>

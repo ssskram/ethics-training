@@ -4,6 +4,7 @@ const session = require('express-session')
 const cookieParser = require('cookie-parser')
 const bodyParser = require('body-parser')
 const methodOverride = require('method-override')
+const expressValidator = require('express-validator')
 const passport = require('passport')
 const mongoose = require('mongoose')
 const flash = require('express-flash')
@@ -21,11 +22,6 @@ mongoose.set('useCreateIndex', true)
 mongoose.connect(process.env.MONGODB_URI)
 const db = mongoose.connection
 
-// cookie config
-const cookieExpirationDate = new Date()
-const cookieExpirationDays = 365
-cookieExpirationDate.setDate(cookieExpirationDate.getDate() + cookieExpirationDays)
-
 // configure express
 const app = express()
 app.set('views', __dirname + '/auth/views')
@@ -34,13 +30,14 @@ app.use(cookieParser(process.env.SECRET))
 app.use(bodyParser.urlencoded({
   extended: true
 }))
+app.use(expressValidator())
 app.use(methodOverride())
 app.use(session({
   secret: process.env.SECRET,
   resave: true,
   saveUninitialized: true,
   cookie: {
-    expires: cookieExpirationDate
+    maxAge: 1209600000
   },
   store: new MongoStore({
     mongooseConnection: db
@@ -48,8 +45,8 @@ app.use(session({
 }))
 app.use(passport.initialize())
 app.use(passport.session())
-app.use(flash())
 app.use(express.static(__dirname + '/auth/assets'))
+app.use(flash())
 
 // external users
 const externalUser = require('./auth/controllers/externalUser')

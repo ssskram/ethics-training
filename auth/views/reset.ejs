@@ -1,29 +1,25 @@
 <!DOCTYPE html>
 <html>
 
-<head>
-    <title>City of Pittsburgh Ethics Training</title>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1,user-scalable=0" />
-    <link href="https://fonts.googleapis.com/css?family=Raleway|Roboto" rel="stylesheet">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="auth.css" />
-</head>
+<% include ./partials/header %>
 
 <body>
     <% include ./partials/loader %>
     <div class="row login">
         <form action="/reset" method="post">
+            <div class='col-md-12'>
+                <% include ./partials/flash %>
+            </div>
             <span style='font-size: 2.2em;'>Reset Password</span>
             <br />
             <input hidden id='token' name='token' value=<%=token %>></input>
             <div class="form-group">
                 <label">New Password</label>
-                    <input type="password" class="form-control" id="password" name="password" placeholder="Password">
+                    <input type="password" class="form-control" id="password" name="password" placeholder="Password" required>
             </div>
             <div class="form-group">
                 <label">Confirm Password</label>
-                    <input type="password" class="form-control" id="confirmPassword" name="confirmPassword" placeholder="Confirm Password">
+                    <input type="password" class="form-control" id="confirm" name="confirm" placeholder="Confirm Password" required>
             </div>
             <button type="submit" class="btn btn-primary">Change Password</button>
         </form>

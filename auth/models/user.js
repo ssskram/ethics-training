@@ -7,14 +7,11 @@ const userSchema = new mongoose.Schema({
     type: String,
     unique: true
   },
+  name: String,
+  organization: String,
   password: String,
   passwordResetToken: String,
   passwordResetExpires: Date,
-  profile: {
-    firstName: String,
-    lastName: String,
-    organization: String
-  }
 }, {
   timestamps: true
 });

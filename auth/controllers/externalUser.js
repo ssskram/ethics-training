@@ -24,7 +24,8 @@ exports.postLogin = (req, res, next) => {
       return next(err)
     }
     if (!user) {
-      return res.redirect('/login')
+      req.flash('errors', info.msg)
+      return res.render('externalUser')
     }
     await req.login(user, (err) => {
       if (err) {
@@ -48,9 +49,23 @@ exports.getSignup = (req, res) => {
 
 // post signup
 exports.postSignup = (req, res, next) => {
+  req.assert('email', 'Email is not valid').isEmail()
+  req.assert('password', 'Password must be at least 4 characters long').len(4)
+  req.assert('confirmPassword', 'Passwords do not match').equals(req.body.password)
+
+  const errors = req.validationErrors()
+
+  if (errors) {
+    console.log(errors[0].msg)
+    req.flash('errors', errors[0].msg)
+    return res.render('newAccount')
+  }
+
   const user = new User({
     email: req.body.email,
-    password: req.body.password
+    password: req.body.password,
+    name: req.body.name,
+    organization: req.body.organization
   })
   User.findOne({
     email: req.body.email
@@ -59,7 +74,8 @@ exports.postSignup = (req, res, next) => {
       return next(err)
     }
     if (existingUser) {
-      return res.redirect('/signup')
+      req.flash('errors', 'Account with that email address already exists.');
+      return res.render('newAccount')
     }
     user.save((err) => {
       if (err) {
@@ -69,81 +85,12 @@ exports.postSignup = (req, res, next) => {
         if (err) {
           return next(err)
         }
-        res.redirect('/')
+        req.session.save(() => {
+          res.redirect('/')
+        })
       })
     })
   })
-}
-
-
-// get password reset token
-exports.getReset = (req, res, next) => {
-  if (req.isAuthenticated()) {
-    return res.redirect('/')
-  }
-  User
-    .findOne({
-      passwordResetToken: req.params.token
-    })
-    .where('passwordResetExpires').gt(Date.now())
-    .exec((err, user) => {
-      if (err) {
-        return next(err)
-      }
-      if (!user) {
-        return res.redirect('/forgotPassword')
-      }
-      console.log('here')
-      res.render('reset', {
-        token: req.params.token
-      })
-    })
-}
-
-// process password reset
-exports.postReset = (req, res, next) => {
-  const resetPassword = () =>
-    User
-    .findOne({
-      passwordResetToken: req.body.token
-    })
-    .where('passwordResetExpires').gt(Date.now())
-    .then((user) => {
-      if (!user) {
-        return res.redirect('back')
-      }
-      user.password = req.body.password
-      user.passwordResetToken = undefined
-      user.passwordResetExpires = undefined
-      return user.save().then(() => new Promise((resolve, reject) => {
-        req.logIn(user, (err) => {
-          if (err) {
-            return reject(err)
-          }
-          resolve(user)
-        })
-      }))
-    })
-
-  const sendResetPasswordEmail = (user) => {
-    if (!user) {
-      return
-    }
-    const msg = {
-      to: user.email,
-      from: 'Support@pghethicstraining.com',
-      subject: 'Your PGH Ethics Training password has been changed',
-      text: `Hello,\n\nThis is a confirmation that the password for your account ${user.email} has just been changed.\n`
-    }
-    sgMail.send(msg)
-  }
-
-  resetPassword()
-    .then(sendResetPasswordEmail)
-    .then(() => {
-      if (!res.finished) res.redirect('/')
-    })
-    .catch(err => next(err))
 }
 
 // forgot password
@@ -156,6 +103,17 @@ exports.getForgot = (req, res) => {
 
 // post forgot password
 exports.postForgot = (req, res, next) => {
+  req.assert('email', 'Please enter a valid email address.').isEmail()
+  req.sanitize('email').normalizeEmail({
+    gmail_remove_dots: false
+  })
+
+  const errors = req.validationErrors()
+
+  if (errors) {
+    req.flash('errors', errors[0].msg)
+    return res.render('forgotPassword')
+  }
 
   const createRandomToken = randomBytesAsync(16)
     .then(buf => buf.toString('hex'))
@@ -166,7 +124,10 @@ exports.postForgot = (req, res, next) => {
       email: req.body.email
     })
     .then((user) => {
-      if (!user) {} else {
+      if (!user) {
+        req.flash('errors', 'Account with that email address does not exist.')
+        return res.render('forgotPassword')
+      } else {
         user.passwordResetToken = token
         user.passwordResetExpires = Date.now() + 3600000 // 1 hour
         user = user.save()
@@ -197,4 +158,85 @@ exports.postForgot = (req, res, next) => {
     .then(setRandomToken)
     .then(sendForgotPasswordEmail)
     .catch(next)
+}
+
+// get password reset token
+exports.getReset = (req, res, next) => {
+  if (req.isAuthenticated()) {
+    return res.redirect('/')
+  }
+  User
+    .findOne({
+      passwordResetToken: req.params.token
+    })
+    .where('passwordResetExpires').gt(Date.now())
+    .exec((err, user) => {
+      if (err) {
+        return next(err)
+      }
+      if (!user) {
+        req.flash('errors', 'Password reset token is invalid or has expired.');
+        return res.render('forgotPassword')
+      }
+      res.render('reset', {
+        token: req.params.token
+      })
+    })
+}
+
+// process password reset
+exports.postReset = (req, res, next) => {
+  req.assert('password', 'Password must be at least 4 characters long.').len(4)
+  req.assert('confirm', 'Passwords must match.').equals(req.body.password)
+  const errors = req.validationErrors()
+
+  if (errors) {
+    req.flash('errors', errors[0].msg)
+    return res.render('reset', {
+      token: req.body.token
+    })
+  }
+
+  const resetPassword = () =>
+    User
+    .findOne({
+      passwordResetToken: req.body.token
+    })
+    .where('passwordResetExpires').gt(Date.now())
+    .then((user) => {
+      if (!user) {
+        req.flash('errors', 'Password reset token is invalid or has expired.')
+        return res.render('forgotPassword')
+      }
+      user.password = req.body.password
+      user.passwordResetToken = undefined
+      user.passwordResetExpires = undefined
+      return user.save().then(() => new Promise((resolve, reject) => {
+        req.logIn(user, (err) => {
+          if (err) {
+            return reject(err)
+          }
+          resolve(user)
+        })
+      }))
+    })
+
+  const sendResetPasswordEmail = async (user) => {
+    if (!user) {
+      return
+    }
+    const msg = {
+      to: user.email,
+      from: 'Support@pghethicstraining.com',
+      subject: 'Your PGH Ethics Training password has been changed',
+      text: `Hello,\n\nThis is a confirmation that the password for your account ${user.email} has just been changed.\n`
+    }
+    await sgMail.send(msg)
+    req.flash('success', 'Success! Your password has been changed.')
+    res.render('externalUser')
+  }
+
+  resetPassword()
+    .then(sendResetPasswordEmail)
+    .catch(err => next(err))
 }

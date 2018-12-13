@@ -7,6 +7,7 @@
     <% include ./partials/loader %>
     <div class="row login">
         <form action="/login" method="post">
+            <% include ./partials/flash %>
             <span style='font-size: 2.2em;'>Log in</span>
             <img src="pgh.png" style='height: 75px; float: right;' />
             <div class="form-group" style='margin-top: 10px;'>
@@ -15,13 +16,13 @@
             </div>
             <div class="form-group">
                 <label">Password</label>
-                    <input type="password" class="form-control" id="password" name="password" placeholder="Password"
-                        required>
+                    <input type="password" class="form-control" id="password" name="password" placeholder="Password"required>
             </div>
             <button type="submit" class="btn btn-primary">Login</button>
             <a href='/forgotPassword' class='btn btn-link'>Forgot password?</a>
-            <div class="form-group" style='margin-top: 25px;'>
-                <a href='/newAccount' class='btn btn-warning'>Don't have an account yet?<br /><b>Click here to create one</b></a>
+            <div class="form-group text-center" style='margin-top: 25px;'>
+                <a href='/newAccount' class='btn btn-warning'>Don't have an account yet?<br /><b>Click here to create
+                        one</b></a>
             </div>
         </form>
     </div>
