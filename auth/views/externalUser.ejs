@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html>
 
@@ -16,21 +15,21 @@
         <div class="loader"></div>
     </div>
     <div class="row login">
-        <div class="col-md-12 text-center">
-            <img src="ip.png" class="auth-img img-responsive" />
-        </div>
-        <div class="col-md-12 text-center">
-            <a href='/auth' onclick="overlay()" class="btn btn-secondary" id="login" title="Log in using your City email">
-                City Employees log in here
-            </a>
-        </div>
-        <div class="col-md-12 text-center">
-            <a href='/externalUser' onclick="overlay()" class="btn btn-secondary" id="login" title="Log in using your City email">
-                Non-City employees log in here
-            </a>
-        </div>
+        <form action="/login" method="post">
+            <div class="form-group">
+                <label>Email address</label>
+                <input type="email" class="form-control" id="email" name="email" placeholder="Enter email">
+                <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+            </div>
+            <div class="form-group">
+                <label">Password</label>
+                <input type="password" class="form-control" id="password" name="password" placeholder="Password">
+            </div>
+            <button type="submit" class="btn btn-primary">Create account</button>
+        </form>
     </div>
 </body>
 <script type="text/javascript" src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
 <script src="auth.js"></script>
+
 </html>
