@@ -8,13 +8,13 @@ export default class Menu extends React.Component {
         return (
             <Nav>
                 <LinkContainer to={'/'} exact>
-                    <NavItem>Submit</NavItem>
+                    <NavItem>Step 1: Review course material</NavItem>
                 </LinkContainer>
-                <LinkContainer to={'/MyRequests'}>
-                    <NavItem>My Requests</NavItem>
+                <LinkContainer to={'/'}>
+                    <NavItem>Step 2: Complete the exam</NavItem>
                 </LinkContainer>
-                <LinkContainer to={'/AllRequests'}>
-                    <NavItem>All Requests</NavItem>
+                <LinkContainer to={'/'}>
+                    <NavItem><b>Gift disclosures</b></NavItem>
                 </LinkContainer>
             </Nav>
         )

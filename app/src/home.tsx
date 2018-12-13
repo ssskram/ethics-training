@@ -7,7 +7,7 @@ export default class Home extends React.Component<any, any> {
         return (
             <div>
                 <HydrateStore />
-                Howdy
+                Content and stuff!
             </div>
         )
     }

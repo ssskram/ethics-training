@@ -11,7 +11,7 @@ export default class NavMenu extends React.Component<any, any> {
       <Navbar inverse fixedTop fluid collapseOnSelect style={{zIndex: 1000 as any}}>
         <Navbar.Header>
           <Navbar.Brand>
-            <Link to={'/'}>nodereactbp</Link>
+            <Link to={'/'}>PGH Ethics Training</Link>
           </Navbar.Brand>
           <Navbar.Toggle/>
         </Navbar.Header>
