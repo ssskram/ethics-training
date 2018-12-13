@@ -40,7 +40,7 @@ exports.getSignup = (req, res) => {
   if (req.user) {
     return res.redirect('/')
   }
-  res.render('/newAccount')
+  res.render('newAccount')
 }
 
 // post signup
@@ -178,12 +178,11 @@ exports.postReset = (req, res, next) => {
 
 // forgot password
 exports.getForgot = (req, res) => {
+  console.log('here')
   if (req.isAuthenticated()) {
     return res.redirect('/')
   }
-  res.render('account/forgot', {
-    title: 'Forgot Password'
-  })
+  res.render('forgotPassword')
 }
 
 // post forgot password
