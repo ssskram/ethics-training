@@ -29,13 +29,13 @@ cookieExpirationDate.setDate(cookieExpirationDate.getDate() + cookieExpirationDa
 const app = express()
 app.set('views', __dirname + '/auth/views')
 app.set('view engine', 'ejs')
-app.use(cookieParser('asdf33g4w4hghjkuil8saef345'))
+app.use(cookieParser(process.env.SECRET))
 app.use(bodyParser.urlencoded({
   extended: true
 }))
 app.use(methodOverride())
 app.use(session({
-  secret: 'asdf33g4w4hghjkuil8saef345',
+  secret: process.env.SECRET,
   resave: true,
   saveUninitialized: true,
   cookie: {

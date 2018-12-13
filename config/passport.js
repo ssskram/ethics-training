@@ -4,6 +4,7 @@ const OutlookStrategy = require('passport-outlook').Strategy
 const User = require('../auth/models/user')
 require('dotenv').config()
 
+// handle accounts
 passport.serializeUser(function (user, done) {
     done(null, user)
 })
