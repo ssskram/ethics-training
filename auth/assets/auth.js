@@ -8,6 +8,11 @@ if (isIE) {
 }
 
 // show overlay spinner on network activity
-function overlay() {
+function overlay () {
   document.getElementById('overlayloader').style.display = 'flex'
+}
+
+// enable new account generation on captcha callback
+function enableBtn () {
+  document.getElementById('newaccount').disabled = false
 }

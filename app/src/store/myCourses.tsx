@@ -9,8 +9,8 @@ const unloadedState: types.courses = {
 }
 
 export const actionCreators = {
-    loadUsersCourses: (): AppThunkAction<any> => (dispatch) => {
-        fetch('/getUsersCourses', { credentials: 'same-origin' })
+    loadMyCourses: (): AppThunkAction<any> => (dispatch) => {
+        fetch('/getMyCourses', { credentials: 'same-origin' })
         .then(response => {
             response.json().then(data => {
                 dispatch({ type: constants.loadUsersCourses, courses: data })
