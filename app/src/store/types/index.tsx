@@ -15,10 +15,14 @@ export interface courses {
 }
 
 // course
-export interface course { 
+export interface course {
+    courseID: string 
     started: string
-    complete: string
-    percentProgress: string
-    currentStage: string
-    grade: string
+    user: string
+    email: string
+    organization: string
+    completed: string
+    progress: string
+    module: string
+    highPoint: string
 }

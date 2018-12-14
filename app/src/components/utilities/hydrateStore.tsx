@@ -6,21 +6,37 @@ import { connect } from 'react-redux'
 import { ApplicationState } from '../../store'
 import * as user from '../../store/user'
 import * as myCourses from '../../store/myCourses'
+import Spinner from '../utilities/spinner'
 
-class Hydrate extends React.Component<any, {}> {
+class Hydrate extends React.Component<any, any> {
+    constructor(props) {
+        super(props)
+        this.state = {
+            spinner: true
+        }
+    }
 
     componentDidMount() {
         this.props.loadUser()
-        this.props.loadMyCourses()
+        if (this.props.user) {
+            this.props.loadMyCourses(user)
+            this.setState({ spinner: false })
+        }
     }
 
     componentWillReceiveProps(nextProps) {
-        // filter open course from myCourses
-        // set state myCourses to response
+        if (this.props.user != nextProps.user) {
+            this.props.loadMyCourses(user)
+            this.setState({ spinner: false })
+        }
     }
 
     public render() {
-        return null
+        return (
+            <div>
+                {this.state.spinner == true && <Spinner notice='...loading your course history...' />}
+            </div>
+        )
     }
 }
 

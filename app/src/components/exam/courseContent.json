@@ -1,0 +1,14 @@
+[
+    {
+        "id": "1",
+        "module": "Definitions",
+        "question": "How do you know when a problem involves ethics?",
+        "answers": [
+            "If you are forced to consider where your obligations and duties lie",
+            "If it raises moral problems for you or a coworker",
+            "When a correct and incorrect response is not clear",
+            "All of the above"
+        ],
+        "correct": 4
+    }
+]

@@ -9,6 +9,5 @@ export const clear = 'clearMessage'
 
 // users courses
 export const loadUsersCourses = 'loadCoarses'
-
-// course progress
-export const updateProgress = 'updateProgress'
+export const newCourse = 'newCourse'
+export const updateCourse = 'updateCourse'
