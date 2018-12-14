@@ -49,20 +49,22 @@ app.use(express.static(__dirname + '/auth/assets'))
 app.use(flash())
 
 // external users
-const externalUser = require('./auth/controllers/externalUser')
-app.get('/externalUser', externalUser.getLoginForm)
-app.post('/login', externalUser.postLogin)
-app.get('/forgotPassword', externalUser.getForgot)
-app.post('/forgotPassword', externalUser.postForgot)
-app.get('/reset/:token', externalUser.getReset)
-app.post('/reset', externalUser.postReset)
-app.get('/newAccount', externalUser.getSignup)
-app.post('/newAccount', externalUser.postSignup)
+const externalLogin = require('./auth/controllers/externalUser/login')
+const signup = require('./auth/controllers/externalUser/signup')
+const resetPassword = require('./auth/controllers/externalUser/resetPassword')
+app.get('/externalUser', externalLogin.getLoginForm)
+app.post('/login', externalLogin.postLogin)
+app.get('/newAccount', signup.getSignup)
+app.post('/newAccount', signup.postSignup)
+app.get('/validate/:token', signup.validateAccount)
+app.get('/forgotPassword', resetPassword.getForgot)
+app.post('/forgotPassword', resetPassword.postForgot)
+app.get('/reset/:token', resetPassword.getReset)
+app.post('/reset', resetPassword.postReset)
 
 // internal users
 const internalUser = require('./auth/controllers/internalUser')
 app.get('/login', internalUser.login)
-app.get('/logout', internalUser.logout)
 app.get('/accessDenied', internalUser.accessDenied)
 app.get('/auth', internalUser.auth)
 app.get('/signin-microsoft',
@@ -82,6 +84,10 @@ app.get('/signin-microsoft',
       })
     }
   })
+
+// logout
+const logout = require('./auth/controllers/logout')
+app.get('/logout', logout.logout)
 
 // returns user's email address
 app.get('/getUser', function (req, res) {

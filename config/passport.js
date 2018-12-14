@@ -34,23 +34,28 @@ passport.use(new LocalStrategy({
         email: email.toLowerCase()
     }, (err, user) => {
         if (err) {
-            return done(err);
+            return done(err)
         }
         if (!user) {
             return done(null, false, {
-                msg: `Email ${email} not found.`
-            });
+                msg: `Account for ${email} not found.`
+            })
+        }
+        if (user.accountValidated == 'false') {
+            return done(null, false, {
+                msg: `Your account has not been validated.  Please check your email for directions.`
+            })
         }
         user.comparePassword(password, (err, isMatch) => {
             if (err) {
-                return done(err);
+                return done(err)
             }
             if (isMatch) {
                 return done(null, user)
             }
             return done(null, false, {
                 msg: 'Invalid email or password.'
-            });
-        });
-    });
-}));
+            })
+        })
+    })
+}))
