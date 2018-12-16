@@ -15,38 +15,42 @@ import Answers from './answerSelection'
 import Helper from './helper'
 import Question from './question'
 import DirectionalButtons from './directionalButtons'
-const courseContent = require('./courseContent')
+const examContent = require('./examContent')
 
 interface actionProps {
     clearMessage: () => void,
     newCourse: () => void,
-    updateCourse: () => void
+    updateCourse: (highpoint) => void
 }
 
 type props =
     types.user &
     types.myCourses &
-    types.message
+    types.message &
+    actionProps
 
 export class Exam extends React.Component<props, any> {
     constructor(props) {
         super(props)
         this.state = {
-            courseContent: courseContent as types.examContent,
+            examContent: examContent as types.examContent,
             highpoint: 0,
         }
     }
 
     componentDidMount() {
-        
-    }
-
-    componentWillReceiveProps(nextProps) {
-
+        const activeExam = this.props.myCourses.find(course => course.completed == "false")
+        if (activeExam) {
+            this.setHighpoint(activeExam)
+        } else {
+            this.props.newCourse()
+        }
     }
 
     setHighpoint(activeExam) {
-
+        this.setState ({
+            highpoint: activeExam.highPoint
+        })
     }
 
     public render() {

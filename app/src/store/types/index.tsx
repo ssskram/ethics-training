@@ -9,12 +9,12 @@ export interface message {
     message: string
 }
 
-// courses
+// my courses
 export interface myCourses {
     myCourses: course[]
 }
 
-// course
+// course record
 export interface course {
     courseID: string
     started: string
@@ -29,6 +29,11 @@ export interface course {
 
 // exam content
 export interface examContent {
+    questions: examQuestion[]
+}
+
+// exam question
+export interface examQuestion {
     id: number
     module: string
     question: string
