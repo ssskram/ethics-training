@@ -5,7 +5,7 @@ export interface user {
 }
 
 // message
-export interface messsage { 
+export interface message {
     message: string
 }
 
@@ -16,7 +16,7 @@ export interface courses {
 
 // course
 export interface course {
-    courseID: string 
+    courseID: string
     started: string
     user: string
     email: string
@@ -25,4 +25,14 @@ export interface course {
     progress: string
     module: string
     highPoint: string
+}
+
+// exam content
+export interface examContent {
+    id: number
+    module: string
+    question: string
+    answers: string[]
+    correct: string
+    helper: string
 }

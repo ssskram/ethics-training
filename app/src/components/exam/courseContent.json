@@ -165,7 +165,7 @@
         "helper": "No public employee shall appoint, hire, advance or advocate the appointment, hiring or advancing a member of his or her direct family to a City position. Since Betty is a direct member of Jessica’s family, promoting Betty would be prohibited without first obtaining a waiver of the rule by the Ethics Hearing Board."
     },
     {
-        "id": 14,
+        "id": 15,
         "module": "Gifts & Employment",
         "question": "Councilwoman, Carrie Hunter, just hired her step-son, Jim Hunter, as her Chief of Staff. Is this permitted under the City of Pittsburgh’s Ethics Code?",
         "answers": [
@@ -176,7 +176,7 @@
         "helper": "This violates the rule regarding the Employment or Appointment of Relatives, which states that a direct family member of a public official or public employee shall not be appointed, hired or advanced to a position which is under the direct jurisdiction or control of that public official or public employee."
     },
     {
-        "id": 14,
+        "id": 16,
         "module": "Gifts & Employment",
         "question": "It is discovered that a high-ranking City Official made a deal with the general manager of Acme Security Firm, a City contractor, to provide personal security for the City Official’s special guests when they visited the City for business meetings. In exchange for these after-hours services, the City Official graciously offered the general manager the use of his vacation home at a local ski resort. \n Which statement is correct?",
         "answers": [
@@ -189,7 +189,7 @@
         "helper": "A Public Official, Public Employee, or City Employee shall not solicit or accept anything of value from any person or entity that the Public Official, Public Employee, or City Employee knows or has reason to know, is an Interested Party."
     },
     {
-        "id": 15,
+        "id": 17,
         "module": "Gifts & Employment",
         "question": "Janet was terminated from her position as a City solicitor in October 2016. Six months later, Janet has opened her own law practice and is representing a client who she formerly represented for the City, now suing the City for employment discrimination.",
         "answers": [
@@ -200,7 +200,7 @@
         "helper": "Janet is required to wait for a period of 12 months from the time her employment or service was terminated, before representing a person, with or without compensation, on a matter before the governmental body with which she had been associated."
     },
     {
-        "id": 16,
+        "id": 18,
         "module": "Conflict of Interest & Misuse of Authority",
         "question": "Sherry is a City employee in charge of booking a caterer for a City charity event. She chooses to book her brother’s catering business for the event because then both the City and her brother can benefit from the event. \n Has Sherry violated the Conflict of Interest rule by hiring her brother’s company for her employer’s event?",
         "answers": [
@@ -211,7 +211,7 @@
         "helper": "Sherry has exerted influence with respect to a business with which she or a member of her direct family is associated. This is a conflict of interest."
     },
     {
-        "id": 17,
+        "id": 19,
         "module": "Conflict of Interest & Misuse of Authority",
         "question": "Tom is a Public Official.  Tom is involved in a matter which requires him to vote to approve an expenditure payable to a company that does business with Tom’s wife’s company.  What is Tom’s responsibility to do in this situation?",
         "answers": [
@@ -224,7 +224,7 @@
         "helper": "Tom must abstain from the vote and publicly announce the nature of the interest prior to the vote."
     },
     {
-        "id": 17,
+        "id": 20,
         "module": "Conflict of Interest & Misuse of Authority",
         "question": "Bradley is a City Council member who is up for re-election. He makes a deal with a Taylor Construction Inc., promising to sign a 2-year contract with them after he is re-elected so long as they endorse and vote for him. \n Has Bradley violated any rules of ethics?",
         "answers": [
@@ -235,7 +235,7 @@
         "helper": "Bradley will use his position to create a benefit for his personal interest of being re-elected for City Council."
     },
     {
-        "id": 17,
+        "id": 21,
         "module": "Conflict of Interest & Misuse of Authority",
         "question": "Connie is a member of the Zoning Board and a member of the Rotary Club. The Zoning Board is discussing a plan to enter a contract with the Rotary Club which will require Connie to give input and vote.  The contract would provide the Rotary Club with much needed funds to carry-on some of the Club’s charitable work. \n Does Connie have to disclose her relationship with the Rotary Club?",
         "answers": [
@@ -246,7 +246,7 @@
         "helper": "Connie has a conflict of Interest.  Connie is required to disclose on the record the nature and extent of the interest that exists."
     },
     {
-        "id": 17,
+        "id": 22,
         "module": "Conflict of Interest & Misuse of Authority",
         "question": "John is a City Building Inspector. He also has his own private business working as a contractor on the side. While he is on the job for the City and visiting job sites for inspections, he hands out his personal business cards and suggests the property owners give him a call for any contracting work they may need in the future. \n Is John engaging in an act that constitutes an ethical violation?",
         "answers": [
@@ -257,7 +257,7 @@
         "helper": "John is engaging in Misuse of Authority by using City time and clients to benefit his own personal business. This rule prohibits the use of any City facilities, property, staff, or information obtained during his employment for personal use other than would be generally available to the public at large."
     },
     {
-        "id": 18,
+        "id": 23,
         "module": "Conflict of Interest & Misuse of Authority",
         "question": "Refer back to the previous question (about John, the City Building Inspector) to answer this: \n Would it make a difference if John returned to the same job sites after hours to hand out his personal business cards to the property owners to solicit business for his own private company?",
         "answers": [
@@ -268,7 +268,7 @@
         "helper": "It is still a Misuse of Authority for John to use his City position to benefit his private business, even if the solicitation occurs after hours.  The source of potential customers was information obtained during his employment."
     },
     {
-        "id": 19,
+        "id": 24,
         "module": "Conflict of Interest & Misuse of Authority",
         "question": "Matt is a city employee in the department of City Planning.  Matt has a degree in Urban Planning from a prestigious university.  In addition to his job at the city, Matt has a consulting business as an urban planner.  Matt had business cards printed for his consulting business on which he included his official title as “City Planner for the City of Pittsburgh.”  Has Matt broken any rules?",
         "answers": [
@@ -279,7 +279,7 @@
         "helper": "No city employee shall use or permit the use of his or her official title, insignia or position in connection with any private business from which the employee receives compensation."
     },
     {
-        "id": 20,
+        "id": 25,
         "module": "Conflict of Interest & Misuse of Authority",
         "question": "No City employee shall contribute more than _______ during any consecutive four-year period to any political campaign of his or her employer or to any political campaign of his or her employing authority.",
         "answers": [

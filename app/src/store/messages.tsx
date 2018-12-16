@@ -3,7 +3,7 @@ import { AppThunkAction } from '.'
 import * as constants from './constants'
 import * as types from './types'
 
-const unloadedState: types.messsage = {
+const unloadedState: types.message = {
     message: ''
 }
 
@@ -19,7 +19,7 @@ export const actionCreators = {
     }
 }
 
-export const reducer: Reducer<types.messsage> = (state: types.messsage, incomingAction: Action) => {
+export const reducer: Reducer<types.message> = (state: types.message, incomingAction: Action) => {
     const action = incomingAction as any
     switch (action.type) {
         case constants.success:
