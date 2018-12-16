@@ -25,7 +25,7 @@ interface actionProps {
 
 type props =
     types.user &
-    types.courses &
+    types.myCourses &
     types.message
 
 export class Exam extends React.Component<props, any> {
@@ -38,6 +38,7 @@ export class Exam extends React.Component<props, any> {
     }
 
     componentDidMount() {
+        
     }
 
     componentWillReceiveProps(nextProps) {

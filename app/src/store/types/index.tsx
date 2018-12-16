@@ -10,8 +10,8 @@ export interface message {
 }
 
 // courses
-export interface courses {
-    courses: course[]
+export interface myCourses {
+    myCourses: course[]
 }
 
 // course

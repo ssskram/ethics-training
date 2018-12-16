@@ -6,7 +6,7 @@ import * as myCourses from './myCourses'
 export interface ApplicationState {
     user: types.user,
     messages: types.message,
-    myCourses: types.courses
+    myCourses: types.myCourses
 }
 
 export const reducers = {

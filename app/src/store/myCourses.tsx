@@ -4,8 +4,8 @@ import { AppThunkAction } from '.'
 import * as constants from './constants'
 import * as types from './types'
 
-const unloadedState: types.courses = {
-    courses: []
+const unloadedState: types.myCourses = {
+    myCourses: []
 }
 
 export const actionCreators = {
@@ -50,17 +50,17 @@ export const actionCreators = {
     }
 }
 
-export const reducer: Reducer<types.courses> = (state: types.courses, incomingAction: Action) => {
+export const reducer: Reducer<types.myCourses> = (state: types.myCourses, incomingAction: Action) => {
     const action = incomingAction as any
     switch (action.type) {
         case constants.loadUsersCourses:
             return { ...state, courses: action.courses }
         case constants.newCourse:
-            return { ...state, courses: state.courses.concat(action.course) }
+            return { ...state, courses: state.myCourses.concat(action.course) }
         case constants.updateCourse:
             return {
                 ...state,
-                courses: state.courses.map(course => course.courseID === action.body.courseID ? {
+                courses: state.myCourses.map(course => course.courseID === action.body.courseID ? {
                     ...course,
                     courseID: action.body.courseID,
                     started: action.body.started,
