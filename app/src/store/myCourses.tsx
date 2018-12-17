@@ -10,7 +10,7 @@ const unloadedState: types.myCourses = {
 
 export const actionCreators = {
     loadMyCourses: (user): AppThunkAction<any> => (dispatch) => {
-        fetch("https://365proxy.azurewebsites.us/ethicstraining/courseHistory?user=" + user, {
+        fetch("http://localhost:3000/ethicstraining/courseHistory?user=" + user.user, {
             method: 'get',
             headers: new Headers({
                 'Authorization': 'Bearer ' + process.env.REACT_APP_365_API
@@ -21,47 +21,82 @@ export const actionCreators = {
                 dispatch({ type: constants.loadUsersCourses, courses: data })
             })
     },
-    newCourse: (): AppThunkAction<any> => (dispatch) => {
-        // build empty submission item here
-        const newExam = {
-            test: true,
-            id: 1
+    newCourse: (user: types.user): AppThunkAction<any> => async (dispatch) => {
+        // generate new course record
+        const forSP = {
+            User: user.name,
+            Email: user.user,
+            Organization: user.organization,
+            Progress: 0,
+            HighPoint: 0,
+            Completed: false,
         }
-        fetch("https://365proxy.azurewebsites.us/ethicstraining/newCourse", {
+        const forStore: types.course = {
+            user: user.name,
+            email: user.user,
+            organization: user.organization,
+            completed: false,
+            progress: 0,
+            highPoint: 0,
+            courseID: undefined,
+            started: undefined
+        }
+        await fetch("http://localhost:3000/ethicstraining/newCourse", {
             method: 'post',
-            body: JSON.stringify(newExam),
+            body: JSON.stringify(forSP),
             headers: new Headers({
-                'Authorization': 'Bearer ' + process.env.REACT_APP_365_API
+                'Authorization': 'Bearer ' + process.env.REACT_APP_365_API,
+                'Content-Type': 'application/json'
             })
         })
             .then(res => res.json())
             .then(data => {
-                newExam.id = data.id // or something like that to save generated course ID to store
-                dispatch({ type: constants.newCourse, courses: newExam })
+                forStore.courseID = data.id
+                dispatch({ type: constants.newCourse, courses: forStore })
             })
-        return newExam
+        return forStore
+
     },
-    updateCourseProgress: (course, forwardProgress): AppThunkAction<any> => (dispatch) => {
-        console.log('course = ' + course)
-        console.log('forward progress = ' + forwardProgress)
+    updateCourseProgress: (course: types.course, forwardProgress: number): AppThunkAction<any> => (dispatch) => {
+        const id = course.courseID
         if (forwardProgress == 100) {
-            course.highPoint == 0
-            course.progress == 100
-            course.completed == true
+            course.highPoint = 0
+            course.progress = 100
+            course.completed = true
         } else {
-            course.highpoint == forwardProgress
-            course.progress == (forwardProgress/24) * 100
+            course.highPoint = forwardProgress
+            course.progress = (forwardProgress / 24)
         }
-        console.log('new course = ;' + course)
-        fetch("https://365proxy.azurewebsites.us/ethicstraining/updateCourse?id=" + course.courseID, {
+        // update course record
+        const forSP = {
+            User: course.user,
+            Email: course.email,
+            Organization: course.organization,
+            Progress: course.progress,
+            HighPoint: course.highPoint,
+            Completed: course.completed,
+        }
+        const forStore: types.course = {            
+            courseID: id,
+            started: course.started,
+            user: course.user,
+            email: course.email,
+            organization: course.organization,
+            completed: course.completed,
+            progress: course.progress,
+            highPoint: course.highPoint
+        }
+        console.log(course)
+        fetch("http://localhost:3000/ethicstraining/updateCourse?id=" + id, {
             method: 'post',
-            body: JSON.stringify(course),
+            body: JSON.stringify(forSP),
             headers: new Headers({
-                'Authorization': 'Bearer ' + process.env.REACT_APP_365_API
+                'Authorization': 'Bearer ' + process.env.REACT_APP_365_API,
+                'Content-Type': 'application/json'
             })
         })
             .then(() => {
-                dispatch({ type: constants.updateCourse, courses: course })
+                dispatch({ type: constants.updateCourse, courses: forStore })
             })
 
     }
@@ -77,7 +112,7 @@ export const reducer: Reducer<types.myCourses> = (state: types.myCourses, incomi
         case constants.updateCourse:
             return {
                 ...state,
-                myCourses: state.myCourses.map(course => course.courseID === action.body.courseID ? {
+                myCourses: state.myCourses.map(course => course.courseID === action.courseID ? {
                     ...course,
                     courseID: action.courses.courseID,
                     started: action.courses.started,

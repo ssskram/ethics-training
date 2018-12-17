@@ -23,7 +23,7 @@ const examContent = require('./examContent')
 interface actionProps {
     clearMessage: () => void,
     newMessage: (newMessage) => void,
-    newCourse: () => {},
+    newCourse: (user) => {},
     updateCourseProgress: (course, forwardProgress) => void
 }
 
@@ -38,7 +38,7 @@ interface state {
     highpoint: number
     forwardProgress: number
     answerCorrect: boolean
-    activeExam: {},
+    activeExam: object,
     redirect: boolean
 }
 
@@ -47,7 +47,7 @@ export class Exam extends React.Component<props, state> {
         super(props)
         this.state = {
             examContent: examContent,
-            activeExam: {},
+            activeExam: undefined,
             highpoint: 0,
             forwardProgress: 0,
             answerCorrect: undefined,
@@ -55,15 +55,17 @@ export class Exam extends React.Component<props, state> {
         }
     }
 
-    componentDidMount() {
+    async componentDidMount() {
         const activeExam = this.props.myCourses.find(course => course.completed == false)
         if (activeExam) {
             this.setHighpoint(activeExam)
             this.setActiveExam(activeExam)
             this.props.newMessage("Welcome back!  Here's where you left off:")
         } else {
-            const newExam = this.props.newCourse()
-            this.setActiveExam(newExam)
+            if (this.props.user) {
+                const newExam = await this.props.newCourse(this.props.user)
+                this.setActiveExam(newExam)
+            }
         }
     }
 
@@ -99,7 +101,7 @@ export class Exam extends React.Component<props, state> {
                 answerCorrect: undefined
             })
             this.props.clearMessage()
-            this.props.updateCourseProgress(this.state.activeExam, this.state.forwardProgress)
+            this.props.updateCourseProgress(this.state.activeExam, this.state.forwardProgress + 1)
         } else {
             this.props.newMessage("Congratulations! You're all finished")
             this.props.updateCourseProgress(this.state.activeExam, 100)
