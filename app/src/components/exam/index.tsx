@@ -48,7 +48,7 @@ export class Exam extends React.Component<props, state> {
             activeExam: {},
             highpoint: 0,
             forwardProgress: 0,
-            answerCorrect: false,
+            answerCorrect: undefined,
             answer: undefined
         }
     }
@@ -66,7 +66,6 @@ export class Exam extends React.Component<props, state> {
     }
 
     setHighpoint(activeExam) {
-        console.log(activeExam)
         this.setState({
             highpoint: activeExam.highPoint,
             forwardProgress: activeExam.highPoint
@@ -80,6 +79,7 @@ export class Exam extends React.Component<props, state> {
     }
 
     checkAnswer(correct, answer) {
+        this.props.clearMessage()
         if (answer == correct) {
             this.setState({
                 answerCorrect: true,
@@ -98,7 +98,7 @@ export class Exam extends React.Component<props, state> {
         this.props.updateCourseProgress(this.state.forwardProgress)
         this.setState({
             forwardProgress: this.state.forwardProgress + 1,
-            answerCorrect: false,
+            answerCorrect: undefined,
             answer: undefined
         })
     }
@@ -108,7 +108,7 @@ export class Exam extends React.Component<props, state> {
         this.props.clearMessage()
         this.setState({
             forwardProgress: this.state.forwardProgress - 1,
-            answerCorrect: false,
+            answerCorrect: undefined,
             answer: undefined
         })
     }

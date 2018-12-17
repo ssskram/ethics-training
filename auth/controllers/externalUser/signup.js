@@ -19,7 +19,6 @@ exports.getSignup = (req, res) => {
 
 // post signup
 exports.postSignup = (req, res, next) => {
-    console.log('here')
     req.assert('email', 'Email is not valid').isEmail()
     req.assert('password', 'Password must be at least 4 characters long').len(4)
     req.assert('confirmPassword', 'Passwords do not match').equals(req.body.password)

@@ -1,0 +1,13 @@
+.panel-button:hover {
+    background-color: #286090 !important;
+    color: #fff !important;
+    cursor: pointer;
+}
+
+.panel-button:active {
+    background-color: #286090;
+}
+
+.panel-button:hover h1, .panel-button:active h1, .panel-button:hover h2, .panel-button:active h2, .panel-button:hover h3, .panel-button:active h3, .panel-button:hover h4, .panel-button:active h4, .panel-button:hover h5, .panel-button:active h5, .panel-button:hover h6, .panel-button:active h6 {
+    color: #fff;
+}
