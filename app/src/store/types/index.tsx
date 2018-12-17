@@ -16,15 +16,15 @@ export interface myCourses {
 
 // course record
 export interface course {
-    courseID: string
+    courseID: number
     started: string
     user: string
     email: string
     organization: string
-    completed: string
+    completed: boolean
     progress: string
     module: string
-    highPoint: string
+    highPoint: number
 }
 
 // exam content

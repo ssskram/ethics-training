@@ -52,7 +52,7 @@ export class Exam extends React.Component<props, state> {
     }
 
     componentDidMount() {
-        const activeExam = this.props.myCourses.find(course => course.completed == "false")
+        const activeExam = this.props.myCourses.find(course => course.completed == false)
         if (activeExam) {
             this.setHighpoint(activeExam)
             this.setActiveExam(activeExam)
@@ -88,12 +88,13 @@ export class Exam extends React.Component<props, state> {
     }
 
     next() {
-        this.props.clearMessage()
-        this.props.updateCourseProgress(this.state.forwardProgress)
         this.setState({
             forwardProgress: this.state.forwardProgress + 1,
+            highpoint: this.state.forwardProgress + 1,
             answerCorrect: undefined
         })
+        this.props.clearMessage()
+        this.props.updateCourseProgress(this.state.forwardProgress)
     }
 
 
@@ -111,7 +112,7 @@ export class Exam extends React.Component<props, state> {
             forwardProgress,
             answerCorrect,
         } = this.state
-
+        
         return (
             <div className='text-center'>
                 <br />
