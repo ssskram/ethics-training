@@ -41,16 +41,27 @@ export const actionCreators = {
             })
         return newExam
     },
-    updateCourseProgress: (body): AppThunkAction<any> => (dispatch) => {
-        fetch("https://365proxy.azurewebsites.us/ethicstraining/updateCourse?id=" + body.courseID, {
+    updateCourseProgress: (course, forwardProgress): AppThunkAction<any> => (dispatch) => {
+        console.log('course = ' + course)
+        console.log('forward progress = ' + forwardProgress)
+        if (forwardProgress == 100) {
+            course.highPoint == 0
+            course.progress == 100
+            course.completed == true
+        } else {
+            course.highpoint == forwardProgress
+            course.progress == (forwardProgress/24) * 100
+        }
+        console.log('new course = ;' + course)
+        fetch("https://365proxy.azurewebsites.us/ethicstraining/updateCourse?id=" + course.courseID, {
             method: 'post',
-            body: body,
+            body: JSON.stringify(course),
             headers: new Headers({
                 'Authorization': 'Bearer ' + process.env.REACT_APP_365_API
             })
         })
             .then(() => {
-                dispatch({ type: constants.updateCourse, courses: body })
+                dispatch({ type: constants.updateCourse, courses: course })
             })
 
     }
@@ -68,15 +79,14 @@ export const reducer: Reducer<types.myCourses> = (state: types.myCourses, incomi
                 ...state,
                 myCourses: state.myCourses.map(course => course.courseID === action.body.courseID ? {
                     ...course,
-                    courseID: action.body.courseID,
-                    started: action.body.started,
-                    user: action.body.user,
-                    email: action.body.email,
-                    organization: action.body.organization,
-                    completed: action.body.completed,
-                    progress: action.body.progress,
-                    module: action.body.module,
-                    highPoint: action.body.highPoint
+                    courseID: action.courses.courseID,
+                    started: action.courses.started,
+                    user: action.courses.user,
+                    email: action.courses.email,
+                    organization: action.courses.organization,
+                    completed: action.courses.completed,
+                    progress: action.courses.progress,
+                    highPoint: action.courses.highPoint
                 } : course
                 )
             };

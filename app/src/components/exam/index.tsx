@@ -5,6 +5,7 @@
 // if next module != this module, throw encouraging modal...or something?
 
 import * as React from 'react'
+import { Redirect } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { ApplicationState } from '../../store'
 import * as user from '../../store/user'
@@ -22,7 +23,7 @@ interface actionProps {
     clearMessage: () => void,
     newMessage: (newMessage) => void,
     newCourse: () => {},
-    updateCourseProgress: (course) => void
+    updateCourseProgress: (course, forwardProgress) => void
 }
 
 type props =
@@ -36,7 +37,8 @@ interface state {
     highpoint: number
     forwardProgress: number
     answerCorrect: boolean
-    activeExam: {}
+    activeExam: {},
+    redirect: boolean
 }
 
 export class Exam extends React.Component<props, state> {
@@ -47,7 +49,8 @@ export class Exam extends React.Component<props, state> {
             activeExam: {},
             highpoint: 0,
             forwardProgress: 0,
-            answerCorrect: undefined
+            answerCorrect: undefined,
+            redirect: false
         }
     }
 
@@ -88,13 +91,21 @@ export class Exam extends React.Component<props, state> {
     }
 
     next() {
-        this.setState({
-            forwardProgress: this.state.forwardProgress + 1,
-            highpoint: this.state.forwardProgress + 1,
-            answerCorrect: undefined
-        })
-        this.props.clearMessage()
-        this.props.updateCourseProgress(this.state.forwardProgress)
+        if (this.state.forwardProgress < 24) {
+            this.setState({
+                forwardProgress: this.state.forwardProgress + 1,
+                highpoint: this.state.forwardProgress + 1,
+                answerCorrect: undefined
+            })
+            this.props.clearMessage()
+            this.props.updateCourseProgress(this.state.activeExam, this.state.forwardProgress)
+        } else {
+            this.props.newMessage("Congratulations! You're all finished")
+            this.props.updateCourseProgress(this.state.activeExam, 100)
+            this.setState ({
+                redirect: true
+            })
+        }
     }
 
 
@@ -111,8 +122,13 @@ export class Exam extends React.Component<props, state> {
             examContent,
             forwardProgress,
             answerCorrect,
+            redirect
         } = this.state
-        
+
+        if (redirect) {
+            return <Redirect push to={'/'} />
+        }
+
         return (
             <div className='text-center'>
                 <br />
@@ -132,6 +148,7 @@ export class Exam extends React.Component<props, state> {
                 <DirectionalButtons
                     back={this.back.bind(this)}
                     examQuestion={examContent[forwardProgress]}
+                    confirmSave={this.props.newMessage.bind(this)}
                 />
             </div>
         )

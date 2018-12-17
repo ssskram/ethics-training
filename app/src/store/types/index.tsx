@@ -22,8 +22,7 @@ export interface course {
     email: string
     organization: string
     completed: boolean
-    progress: string
-    module: string
+    progress: number
     highPoint: number
 }
 

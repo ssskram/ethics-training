@@ -110,7 +110,7 @@
     {
         "id": 9,
         "module": "Gifts & Employment",
-        "question": "As an exception to the Offering, Soliciting or Accepting of Gifts rule, Employees are permitted to attend public events or ceremonies sponsored by non-profit organizations that offer valuables such as admission, attendance, food and refreshment. In this exception, employees are limited to ______ tickets per employee per event.",
+        "question": "As an exception to the Offering, Soliciting or Accepting of Gifts rule, Employees are permitted to attend public events or ceremonies sponsored by non-profit organizations that offer valuables such as admission, attendance, food and refreshment. In this exception, employees are limited to (   ) tickets per employee per event.",
         "answers": [
             "Ten",
             "Five",
@@ -281,7 +281,7 @@
     {
         "id": 24,
         "module": "Conflict of Interest & Misuse of Authority",
-        "question": "No City employee shall contribute more than _______ during any consecutive four-year period to any political campaign of his or her employer or to any political campaign of his or her employing authority.",
+        "question": "No City employee shall contribute more than (   ) during any consecutive four-year period to any political campaign of his or her employer or to any political campaign of his or her employing authority.",
         "answers": [
             "$100",
             "$2,000",
