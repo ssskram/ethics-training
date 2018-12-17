@@ -35,7 +35,6 @@ interface state {
     examContent: types.examContent,
     highpoint: number
     forwardProgress: number
-    answer: string
     answerCorrect: boolean
     activeExam: {}
 }
@@ -48,8 +47,7 @@ export class Exam extends React.Component<props, state> {
             activeExam: {},
             highpoint: 0,
             forwardProgress: 0,
-            answerCorrect: undefined,
-            answer: undefined
+            answerCorrect: undefined
         }
     }
 
@@ -81,14 +79,10 @@ export class Exam extends React.Component<props, state> {
     checkAnswer(correct, answer) {
         this.props.clearMessage()
         if (answer == correct) {
-            this.setState({
-                answerCorrect: true,
-                answer
-            })
+            this.next()
         } else {
             this.setState({
-                answerCorrect: false,
-                answer
+                answerCorrect: false
             })
         }
     }
@@ -98,8 +92,7 @@ export class Exam extends React.Component<props, state> {
         this.props.updateCourseProgress(this.state.forwardProgress)
         this.setState({
             forwardProgress: this.state.forwardProgress + 1,
-            answerCorrect: undefined,
-            answer: undefined
+            answerCorrect: undefined
         })
     }
 
@@ -108,8 +101,7 @@ export class Exam extends React.Component<props, state> {
         this.props.clearMessage()
         this.setState({
             forwardProgress: this.state.forwardProgress - 1,
-            answerCorrect: undefined,
-            answer: undefined
+            answerCorrect: undefined
         })
     }
 
@@ -118,7 +110,6 @@ export class Exam extends React.Component<props, state> {
             examContent,
             forwardProgress,
             answerCorrect,
-            answer
         } = this.state
 
         return (
@@ -134,14 +125,11 @@ export class Exam extends React.Component<props, state> {
                     checkAnswer={this.checkAnswer.bind(this)}
                 />
                 <Helper
-                    answer={answer}
                     correct={answerCorrect}
                     examQuestion={examContent[forwardProgress]}
                 />
                 <DirectionalButtons
-                    next={this.next.bind(this)}
                     back={this.back.bind(this)}
-                    correct={answerCorrect}
                     examQuestion={examContent[forwardProgress]}
                 />
             </div>
