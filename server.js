@@ -92,7 +92,9 @@ app.get('/logout', logout.logout)
 // returns user's email address
 app.get('/getUser', function (req, res) {
   res.status(200).send({
-    'user': req.user.email || req.user.emails[0].value
+    'user': req.user.email || req.user.emails[0].value,
+    'organization' : req.user.organization || "City of Pittsburgh",
+    'name': req.user.name || req.user.displayName
   })
 })
 

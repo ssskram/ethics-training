@@ -17,6 +17,7 @@ import Helper from './helper'
 import Question from './question'
 import DirectionalButtons from './directionalButtons'
 import Messages from '../utilities/messages'
+import { Line } from 'rc-progress'
 const examContent = require('./examContent')
 
 interface actionProps {
@@ -102,7 +103,7 @@ export class Exam extends React.Component<props, state> {
         } else {
             this.props.newMessage("Congratulations! You're all finished")
             this.props.updateCourseProgress(this.state.activeExam, 100)
-            this.setState ({
+            this.setState({
                 redirect: true
             })
         }
@@ -132,6 +133,13 @@ export class Exam extends React.Component<props, state> {
         return (
             <div className='text-center'>
                 <br />
+                {forwardProgress > 0 &&
+                    <div>
+                        <Line percent={forwardProgress / 24 * 100} strokeWidth="4" strokeColor="#D3D3D3" />
+                        <br />
+                        <h2>Module: <b>{examContent[forwardProgress].module}</b></h2>
+                    </div>
+                }
                 <Messages />
                 <Question
                     examQuestion={examContent[forwardProgress]}

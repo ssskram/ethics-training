@@ -5,11 +5,10 @@ import { ApplicationState } from '../../store'
 import * as types from './../../store/types'
 import * as user from '../../store/user'
 
-interface actionProps {
+type props = {
+    user: types.user,
     loadUser: () => void
 }
-
-type props = types.user & actionProps
 
 export class AccountContainer extends React.Component<props, {}> {
     constructor(props) {
@@ -23,11 +22,12 @@ export class AccountContainer extends React.Component<props, {}> {
     render() {
         const {
             user
-        } = this.props;
+        } = this.props
 
         return (
             <div className='accountcontainer'>
-                <div className="account">{user}</div>
+                <div className="account"><b>{user.name}</b></div>
+                <div className="account">{user.organization}</div>
                 <div className='logout'>
                     <button onClick={logout} id="logout" className='btn btn-link navbar-logout-btn'>
                         <span className='glyphicon glyphicon-user nav-glyphicon'></span>Logout

@@ -5,7 +5,9 @@ import * as constants from './constants'
 import * as types from './types'
 
 const unloadedState: types.user = {
-    user: ''
+    user: '',
+    organization: '',
+    name: ''
 }
 
 export const actionCreators = {
@@ -14,11 +16,12 @@ export const actionCreators = {
             fetch('/getUser', { credentials: 'same-origin' })
                 .then(response => {
                     response.json().then(data => {
-                        dispatch({ type: constants.loadUser, user: data.user });
+                        console.log(data)
+                        dispatch({ type: constants.loadUser, user: data });
                     })
                 })
         } else {
-            dispatch({ type: constants.loadUser, user: 'paul.marks@pittsburghpa.gov' });
+            dispatch({ type: constants.loadUser, user: { user: 'paul.marks@pittsburghpa.gov', organization: 'City of Pittsburgh', name: 'Marks, Paul'} });
         }
     }
 }

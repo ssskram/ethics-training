@@ -2,6 +2,8 @@
 // user
 export interface user {
     user: string
+    organization: string
+    name: string
 }
 
 // message
