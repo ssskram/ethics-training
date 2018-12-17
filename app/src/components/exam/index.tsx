@@ -60,6 +60,7 @@ export class Exam extends React.Component<props, state> {
     }
 
     async componentDidMount() {
+        window.scrollTo(0, 0)
         if (this.props.myCourses) {
             this.searchForOpenExam(this.props.myCourses)
         }
@@ -152,12 +153,12 @@ export class Exam extends React.Component<props, state> {
         }
         return (
             <div className='text-center'>
-                <Messages />
                 <br />
+                <Messages />
                 {forwardProgress > 0 &&
                     <Line percent={forwardProgress / 24 * 100} strokeWidth="4" strokeColor="#D3D3D3" />
                 }
-                <h2><br/>Module: <b>{examContent[forwardProgress].module}</b></h2>
+                <h2><br />Module: <b>{examContent[forwardProgress].module}</b></h2>
                 <Question
                     examQuestion={examContent[forwardProgress]}
                 />

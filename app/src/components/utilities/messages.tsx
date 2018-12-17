@@ -4,17 +4,13 @@ import { ApplicationState } from '../../store'
 import * as messages from '../../store/messages'
 
 export class Messages extends React.Component<any, {}> {
-
-    componentWillUnmount() {
-        this.props.clearMessage()
-    }
     
     createMarkup() {
-        return { __html: this.props.message };
+        return { __html: this.props.message }
     }
 
     public render() {
-
+        console.log(this.props.message)
         return (
             this.props.message ? (
                 <div role="alert" className="alert alert-success">

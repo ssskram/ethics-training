@@ -5,10 +5,12 @@ import NavMenu from './nav'
 export default props => (
   <Grid fluid>
     <Row>
-      <NavMenu />
+      <NavMenu/>
     </Row>
     <Row>
-      {props.children}
+      <Col sm={12}>
+        {props.children}
+      </Col>
     </Row>
   </Grid>
 )
