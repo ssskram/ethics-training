@@ -5,6 +5,10 @@ import * as messages from '../../store/messages'
 
 export class Messages extends React.Component<any, {}> {
 
+    componentWillUnmount() {
+        this.props.clearMessage()
+    }
+    
     createMarkup() {
         return { __html: this.props.message };
     }

@@ -11,17 +11,24 @@ const unloadedState: types.user = {
 }
 
 export const actionCreators = {
-    loadUser: (): AppThunkAction<any> => (dispatch) => {
+    loadUser: (): AppThunkAction<any> => async (dispatch) => {
         if (process.env.REACT_APP_ENV != 'dev') {
-            fetch('/getUser', { credentials: 'same-origin' })
+            await fetch('/getUser', { credentials: 'same-origin' })
                 .then(response => {
-                    response.json().then(data => {
-                        console.log(data)
-                        dispatch({ type: constants.loadUser, user: data });
-                    })
+                    response.json()
                 })
+                .then(data => {
+                    dispatch({ type: constants.loadUser, user: data })
+                    return data
+                })
+                .catch(error => {
+                    return error
+                })
+            return null
         } else {
-            dispatch({ type: constants.loadUser, user: { user: 'paul.marks@pittsburghpa.gov', organization: 'City of Pittsburgh', name: 'Marks, Paul'} });
+            const user = { user: 'paul.marks@pittsburghpa.gov', organization: 'City of Pittsburgh', name: 'Marks, Paul' }
+            dispatch({ type: constants.loadUser, user: user })
+            return user
         }
     }
 }

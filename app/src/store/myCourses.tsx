@@ -5,21 +5,21 @@ import * as constants from './constants'
 import * as types from './types'
 
 const unloadedState: types.myCourses = {
-    myCourses: []
+    myCourses: undefined
 }
 
 export const actionCreators = {
     loadMyCourses: (user): AppThunkAction<any> => (dispatch) => {
-        fetch("http://localhost:3000/ethicstraining/courseHistory?user=" + user.user, {
+        fetch("https://365proxy.azurewebsites.us/ethicstraining/courseHistory?user=" + user.user, {
             method: 'get',
             headers: new Headers({
                 'Authorization': 'Bearer ' + process.env.REACT_APP_365_API
             })
         })
-            .then(res => res.json())
-            .then(data => {
-                dispatch({ type: constants.loadUsersCourses, courses: data })
-            })
+        .then(res => res.json())
+        .then(data => {
+            dispatch({ type: constants.loadUsersCourses, courses: data })
+        })
     },
     newCourse: (user: types.user): AppThunkAction<any> => async (dispatch) => {
         // generate new course record
@@ -41,7 +41,7 @@ export const actionCreators = {
             courseID: undefined,
             started: undefined
         }
-        await fetch("http://localhost:3000/ethicstraining/newCourse", {
+        await fetch("https://365proxy.azurewebsites.us/ethicstraining/newCourse", {
             method: 'post',
             body: JSON.stringify(forSP),
             headers: new Headers({
@@ -58,16 +58,15 @@ export const actionCreators = {
 
     },
     updateCourseProgress: (course: types.course, forwardProgress: number): AppThunkAction<any> => (dispatch) => {
-        const id = course.courseID
         if (forwardProgress == 100) {
             course.highPoint = 0
-            course.progress = 100
+            course.progress = 1
             course.completed = true
         } else {
             course.highPoint = forwardProgress
             course.progress = (forwardProgress / 24)
         }
-        // update course record
+        // update course record SP
         const forSP = {
             User: course.user,
             Email: course.email,
@@ -76,18 +75,7 @@ export const actionCreators = {
             HighPoint: course.highPoint,
             Completed: course.completed,
         }
-        const forStore: types.course = {            
-            courseID: id,
-            started: course.started,
-            user: course.user,
-            email: course.email,
-            organization: course.organization,
-            completed: course.completed,
-            progress: course.progress,
-            highPoint: course.highPoint
-        }
-        console.log(course)
-        fetch("http://localhost:3000/ethicstraining/updateCourse?id=" + id, {
+        fetch("https://365proxy.azurewebsites.us/ethicstraining/updateCourse?id=" + course.courseID, {
             method: 'post',
             body: JSON.stringify(forSP),
             headers: new Headers({
@@ -96,7 +84,7 @@ export const actionCreators = {
             })
         })
             .then(() => {
-                dispatch({ type: constants.updateCourse, courses: forStore })
+                dispatch({ type: constants.updateCourse, courses: course })
             })
 
     }

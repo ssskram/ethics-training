@@ -16,7 +16,6 @@ export default class Question extends React.Component<props, any> {
         const length = this.props.examQuestion.question.length
         return (
             <div className='text-center'>
-                <br />
                 {length <= 100 &&
                     < h1 dangerouslySetInnerHTML={this.createMarkup()}></h1>
                 }

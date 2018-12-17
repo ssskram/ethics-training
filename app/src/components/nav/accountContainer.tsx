@@ -25,14 +25,14 @@ export class AccountContainer extends React.Component<props, {}> {
         } = this.props
 
         return (
-            <div className='accountcontainer'>
-                <div className="account"><b>{user.name}</b></div>
-                <div className="account">{user.organization}</div>
-                <div className='logout'>
-                    <button onClick={logout} id="logout" className='btn btn-link navbar-logout-btn'>
-                        <span className='glyphicon glyphicon-user nav-glyphicon'></span>Logout
-                    </button>
-                </div>
+            <div style={{ marginTop: '8px' }} className="navbar-right">
+                <ul className="nav navbar-nav navbar-right">
+                    <li>
+                        <span style={{ color: '#fff' }}><b><span className='glyphicon glyphicon-user nav-glyphicon'></span>{user.name}</b></span>
+                        <button onClick={logout} type="submit" className="btn btn-link navbar-logout-btn">Logout</button>
+                    </li>
+
+                </ul>
             </div>
         )
     }
