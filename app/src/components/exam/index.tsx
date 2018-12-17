@@ -19,6 +19,7 @@ const examContent = require('./examContent')
 
 interface actionProps {
     clearMessage: () => void,
+    newMessage: (newMessage) => void,
     newCourse: () => void,
     updateCourse: (highpoint) => void
 }
@@ -29,12 +30,19 @@ type props =
     types.message &
     actionProps
 
-export class Exam extends React.Component<props, any> {
+interface state {
+    examContent: types.examContent,
+    highpoint: number
+    answerCorrect: boolean
+}
+
+export class Exam extends React.Component<props, state> {
     constructor(props) {
         super(props)
         this.state = {
-            examContent: examContent as types.examContent,
+            examContent: examContent,
             highpoint: 0,
+            answerCorrect: true
         }
     }
 
@@ -48,24 +56,45 @@ export class Exam extends React.Component<props, any> {
     }
 
     setHighpoint(activeExam) {
-        this.setState ({
+        this.setState({
             highpoint: activeExam.highPoint
         })
     }
 
+    checkAnswer(correct, answer) {
+        if (answer == correct) {
+            this.setState({ answerCorrect: true })
+        } else {
+            this.setState ({ answerCorrect: false})
+        }
+    }
+
     public render() {
         const {
-            courseContent,
-            highpoint
+            examContent,
+            highpoint,
+            answerCorrect
         } = this.state
 
         return (
             <div className='text-center'>
                 <br />
-                <Question content={courseContent[highpoint]} />
-                <Answers content={courseContent[highpoint]} />
-                <Helper content={courseContent[highpoint]} />
-                <DirectionalButtons content={courseContent[highpoint]} />
+                <Question
+                    examQuestion={examContent[highpoint]}
+                />
+                <Answers
+                    correct={answerCorrect}
+                    highpoint={highpoint}
+                    examQuestion={examContent[highpoint]}
+                    checkAnswer={this.checkAnswer.bind(this)}
+                />
+                <Helper
+                    correct={answerCorrect}
+                    examQuestion={examContent[highpoint]}
+                />
+                <DirectionalButtons
+                    examQuestion={examContent[highpoint]}
+                />
             </div>
         )
     }

@@ -1,14 +1,24 @@
 
 import * as React from 'react'
+import * as types from './../../store/types'
 
-export default class Helper extends React.Component<any, any> {
+type props = {
+    examQuestion: types.examQuestion,
+    correct: boolean
+}
+
+export default class Helper extends React.Component<props, any> {
 
     public render() {
 
         return (
-            <div className='text-center'>
+            <div className='col-md-12'>
+                {!this.props.correct &&
+                    <div style={{fontSize: '1.5em'}} className='alert alert-danger'>
+                        {this.props.examQuestion.helper}
+                    </div>
+                }
                 <br />
-                <h1>Helper container here</h1>
             </div>
         )
     }

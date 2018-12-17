@@ -3,9 +3,8 @@
 export const loadUser = 'loadUser'
 
 // messages
-export const success = 'successMessage'
-export const failure = 'failureMessage'
-export const clear = 'clearMessage'
+export const newMessage = 'nesMessage'
+export const clearMessage = 'clearMessage'
 
 // users courses
 export const loadUsersCourses = 'loadCoarses'

@@ -8,25 +8,20 @@ const unloadedState: types.message = {
 }
 
 export const actionCreators = {
-    successMessage: (): AppThunkAction<any> => (dispatch) => {
-        dispatch({ type: constants.success });
-    },
-    errorMessage: (): AppThunkAction<any> => (dispatch) => {
-        dispatch({ type: constants.failure });
+    newMessage: (message): AppThunkAction<any> => (dispatch) => {
+        dispatch({ type: constants.clearMessage, message: message });
     },
     clearMessage: (): AppThunkAction<any> => (dispatch) => {
-        dispatch({ type: constants.clear });
+        dispatch({ type: constants.clearMessage });
     }
 }
 
 export const reducer: Reducer<types.message> = (state: types.message, incomingAction: Action) => {
     const action = incomingAction as any
     switch (action.type) {
-        case constants.success:
-            return { ...state, message: "<b>Success!<b/><br/>DPW is on the job" }
-        case constants.failure:
-            return { ...state, message: "<b>Oops!<b/><br/>That didn't work<br/>Please log out, log back in, and try again" }
-        case constants.clear:
+        case constants.newMessage:
+            return { ...state, message: action.message }
+        case constants.clearMessage:
             return { ...state, message: '' }
     }
     return state || unloadedState
