@@ -9,7 +9,8 @@ const unloadedState: types.message = {
 
 export const actionCreators = {
     newMessage: (message): AppThunkAction<any> => (dispatch) => {
-        dispatch({ type: constants.clearMessage, message: message });
+        console.log(message)
+        dispatch({ type: constants.newMessage, message: message });
     },
     clearMessage: (): AppThunkAction<any> => (dispatch) => {
         dispatch({ type: constants.clearMessage });

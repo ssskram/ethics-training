@@ -21,21 +21,27 @@ export const actionCreators = {
                 dispatch({ type: constants.loadUsersCourses, courses: data })
             })
     },
-    newCourse: (body): AppThunkAction<any> => (dispatch) => {
+    newCourse: (): AppThunkAction<any> => (dispatch) => {
+        // build empty submission item here
+        const newExam = {
+            test: true,
+            id: 1
+        }
         fetch("https://365proxy.azurewebsites.us/ethicstraining/newCourse", {
             method: 'post',
-            body: body,
+            body: JSON.stringify(newExam),
             headers: new Headers({
                 'Authorization': 'Bearer ' + process.env.REACT_APP_365_API
             })
         })
             .then(res => res.json())
             .then(data => {
-                body.id = data.id // or something like that to save course ID to store
-                dispatch({ type: constants.newCourse, course: body })
+                newExam.id = data.id // or something like that to save generated course ID to store
+                dispatch({ type: constants.newCourse, courses: newExam })
             })
+        return newExam
     },
-    updateCourse: (body): AppThunkAction<any> => (dispatch) => {
+    updateCourseProgress: (body): AppThunkAction<any> => (dispatch) => {
         fetch("https://365proxy.azurewebsites.us/ethicstraining/updateCourse?id=" + body.courseID, {
             method: 'post',
             body: body,
@@ -44,7 +50,7 @@ export const actionCreators = {
             })
         })
             .then(() => {
-                dispatch({ type: constants.updateCourse, course: body })
+                dispatch({ type: constants.updateCourse, courses: body })
             })
 
     }
@@ -54,13 +60,13 @@ export const reducer: Reducer<types.myCourses> = (state: types.myCourses, incomi
     const action = incomingAction as any
     switch (action.type) {
         case constants.loadUsersCourses:
-            return { ...state, courses: action.courses }
+            return { ...state, myCourses: action.courses }
         case constants.newCourse:
-            return { ...state, courses: state.myCourses.concat(action.course) }
+            return { ...state, myCourses: state.myCourses.concat(action.courses) }
         case constants.updateCourse:
             return {
                 ...state,
-                courses: state.myCourses.map(course => course.courseID === action.body.courseID ? {
+                myCourses: state.myCourses.map(course => course.courseID === action.body.courseID ? {
                     ...course,
                     courseID: action.body.courseID,
                     started: action.body.started,

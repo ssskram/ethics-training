@@ -16,19 +16,10 @@ class Hydrate extends React.Component<any, any> {
         }
     }
 
-    componentDidMount() {
-        this.props.loadUser()
-        if (this.props.user) {
-            this.props.loadMyCourses(user)
-            this.setState({ spinner: false })
-        }
-    }
-
-    componentWillReceiveProps(nextProps) {
-        if (this.props.user != nextProps.user) {
-            this.props.loadMyCourses(user)
-            this.setState({ spinner: false })
-        }
+    async componentDidMount() {
+        await this.props.loadUser()
+        this.props.loadMyCourses(this.props.user)
+        this.setState({ spinner: false })
     }
 
     public render() {

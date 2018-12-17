@@ -4,22 +4,11 @@ import * as types from './../../store/types'
 
 type props = {
     examQuestion: types.examQuestion,
-    highpoint: number,
     correct: boolean
     checkAnswer: (correct, answer) => void
 }
 
 export default class Answers extends React.Component<props, any> {
-    constructor(props) {
-        super(props);
-        this.state = {
-            answer: []
-        }
-    }
-
-    componentWillReceiveProps(nextProps) {
-        console.log(nextProps)
-    }
 
     public render() {
         const selection =
