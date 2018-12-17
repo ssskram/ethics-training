@@ -33,6 +33,7 @@ type props =
 interface state {
     examContent: types.examContent,
     highpoint: number
+    answer: string
     answerCorrect: boolean
 }
 
@@ -42,7 +43,8 @@ export class Exam extends React.Component<props, state> {
         this.state = {
             examContent: examContent,
             highpoint: 0,
-            answerCorrect: true
+            answerCorrect: true,
+            answer: undefined
         }
     }
 
@@ -63,9 +65,9 @@ export class Exam extends React.Component<props, state> {
 
     checkAnswer(correct, answer) {
         if (answer == correct) {
-            this.setState({ answerCorrect: true })
+            this.setState({ answerCorrect: true, answer })
         } else {
-            this.setState ({ answerCorrect: false})
+            this.setState({ answerCorrect: false, answer })
         }
     }
 
@@ -73,7 +75,8 @@ export class Exam extends React.Component<props, state> {
         const {
             examContent,
             highpoint,
-            answerCorrect
+            answerCorrect,
+            answer
         } = this.state
 
         return (
@@ -89,10 +92,12 @@ export class Exam extends React.Component<props, state> {
                     checkAnswer={this.checkAnswer.bind(this)}
                 />
                 <Helper
+                    answer={answer}
                     correct={answerCorrect}
                     examQuestion={examContent[highpoint]}
                 />
                 <DirectionalButtons
+                    correct={answerCorrect}
                     examQuestion={examContent[highpoint]}
                 />
             </div>

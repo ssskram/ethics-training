@@ -4,7 +4,8 @@ import * as types from './../../store/types'
 
 type props = {
     examQuestion: types.examQuestion,
-    correct: boolean
+    correct: boolean,
+    answer: string
 }
 
 export default class Helper extends React.Component<props, any> {
@@ -13,7 +14,7 @@ export default class Helper extends React.Component<props, any> {
 
         return (
             <div className='col-md-12'>
-                {!this.props.correct &&
+                {!this.props.correct && this.props.answer &&
                     <div style={{fontSize: '1.5em'}} className='alert alert-danger'>
                         {this.props.examQuestion.helper}
                     </div>

@@ -1,14 +1,26 @@
-
 import * as React from 'react'
+import * as types from './../../store/types'
 
-export default class DirectionalButtons extends React.Component<any, any> {
+type props = {
+    examQuestion: types.examQuestion,
+    correct: boolean
+}
+export default class DirectionalButtons extends React.Component<props, any> {
+
+    componentDidMount() {
+        console.log(this.props.correct)
+    }
 
     public render() {
 
         return (
-            <div className='text-center'>
-                <br />
-                <h1>Back/next buttons here</h1>
+            <div className='row'>
+                <div className='col-sm-6'>
+                    <button className='btn btn-success'>Back</button>
+                </div>
+                <div className='col-sm-6'>
+                    <button disabled={!this.props.correct} className='btn btn-success'>Next</button>
+                </div>
             </div>
         )
     }
