@@ -44,5 +44,6 @@
     "start": "REACT_APP_ENV=dev react-scripts-ts start",
     "build": "react-scripts-ts build",
     "eject": "react-scripts-ts eject"
-  }
+  },
+  "proxy": "http://localhost:5000"
 }

@@ -70,8 +70,10 @@ export class Exam extends React.Component<props, state> {
             this.setHighpoint(activeExam)
             this.setActiveExam(activeExam)
         } else {
-            const newExam = await this.props.newCourse(this.props.user)
-            this.setActiveExam(newExam)
+            if (this.props.user) {
+                const newExam = await this.props.newCourse(this.props.user)
+                this.setActiveExam(newExam)
+            }
         }
     }
 
@@ -147,7 +149,12 @@ export class Exam extends React.Component<props, state> {
                 <br />
                 <Messages />
                 {forwardProgress > 0 &&
-                    <Line percent={forwardProgress / 24 * 100} strokeWidth="4" strokeColor="#D3D3D3" />
+                    <Line
+                        percent={forwardProgress / 24 * 100}
+                        strokeWidth="2"
+                        trailWidth="2"
+                        strokeColor="rgb(44, 62, 80)"
+                    />
                 }
                 <h3><br /><b>{examContent[forwardProgress].module}</b></h3>
                 <Question

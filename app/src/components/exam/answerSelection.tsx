@@ -18,7 +18,7 @@ export default class Answers extends React.Component<props, any> {
 
     public render() {
         const selection =
-            <div>
+            <div className='row'>
                 {this.props.examQuestion.answers.map((answer, key) => {
 
                     // green border applied to correct answer when helper text is thrown

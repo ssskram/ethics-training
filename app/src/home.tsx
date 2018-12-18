@@ -5,51 +5,27 @@ import { connect } from 'react-redux'
 import { ApplicationState } from './store'
 import * as messages from './store/messages'
 import * as myCourses from './store/myCourses'
+import * as types from './store/types'
 import Video from './components/video'
 import Exam from './components/exam'
 
 const icon = require('./images/pgh.png')
 
-const firstContainer = {
-    height: '90vh',
-    verticalAlign: 'middle',
-    display: 'table-cell'
-}
-const firstChild = {
-    display: "inline-block"
+interface actionProps {
+    clearMessage: () => void,
 }
 
-const secondContainer = {
-    height: '120vh',
-    backgroundColor: 'rgb(44, 62, 80)',
-    width: "100vw",
-    position: "relative" as 'relative',
-    left: "50%",
-    right: "50%",
-    marginLeft: "-50vw",
-    marginRight: "-50vw",
-    display: "flex",
-    justifyContent: 'center',
-    alignItems: 'center'
-}
-const secondChild = {
-    alignSelf: 'center',
-    width: '100%'
+type props =
+    types.message &
+    types.myCourses &
+    actionProps
+
+interface state {
+    onExam: boolean
 }
 
-const thirdContainer = {
-    height: '100vh',
-    verticalAlign: 'middle',
-    display: 'table-cell'
-}
-const thirdChild = {
-    display: "inline-block"
-}
-
-export class Home extends React.Component<any, any> {
-
+export class Home extends React.Component<props, state> {
     private ref: React.RefObject<HTMLHeadingElement>
-
     constructor(props) {
         super(props)
         this.state = {
@@ -59,31 +35,18 @@ export class Home extends React.Component<any, any> {
     }
 
     componentDidMount() {
-        window.scrollTo({
-            top: 0,
-            behavior: "smooth"
-        })
+        window.scrollTo({ top: 0, behavior: "smooth" })
     }
 
-    openForm() {
-        this.setState({
-            onExam: true
-        })
+    openExam() {
+        this.setState({ onExam: true })
         this.props.clearMessage()
-        window.scrollTo({
-            top: this.ref.current.offsetTop-20,
-            behavior: "smooth"
-        })
+        window.scrollTo({ top: this.ref.current.offsetTop - 20, behavior: "smooth" })
     }
 
-    closeForm() {
-        this.setState({
-            onExam: false
-        })
-        window.scrollTo({
-            top: 0,
-            behavior: "smooth"
-        })
+    closeExam() {
+        this.setState({ onExam: false })
+        window.scrollTo({ top: 0, behavior: "smooth" })
     }
 
     render() {
@@ -99,38 +62,37 @@ export class Home extends React.Component<any, any> {
         return (
             <div className='text-center'>
                 <HydrateStore />
-                <div style={firstContainer}>
-                    <div style={firstChild}>
+                <div className='home-container-1'>
+                    <div className='home-child-1'>
                         <img src={icon as string} style={{ height: '200px' }}></img>
                         <h1>Welcome to the Ethics Training Program</h1>
                         <h3>This annual program is <b>mandatory</b> for all employees of the City of Pittsburgh</h3>
                         <Messages />
                     </div>
                 </div>
-                <div style={secondContainer}>
-                    <div style={secondChild}>
+                <div className='home-container-2'>
+                    <div className='home-child-2'>
                         <h1><span style={{ color: '#fff' }}><b>Step 1</b><br />Watch this video</span></h1>
                         <br />
                         <Video />
                     </div>
                 </div>
-                <div style={thirdContainer}>
-                    <div style={thirdChild}>
+                <div className='home-container-1'>
+                    <div className='home-child-1'>
                         <h1 ref={this.ref} style={{ marginTop: '100px' }}><b>Step 2:</b><br />Complete the exam</h1>
                         <h4>The exam is comprised of three modules and can be saved to be completed at a later time</h4>
                         {onExam == false &&
-                            <button style={{ marginBottom: '100px' }} onClick={this.openForm.bind(this)} className='btn btn-primary'>
+                            <button style={{ marginBottom: '100px' }} onClick={this.openExam.bind(this)} className='btn btn-primary'>
                                 <span style={{ fontSize: '1.5em' }}>{openExam ? 'Continue the exam' : 'Take the exam'}</span>
                             </button>
                         }
                         {onExam == true &&
                             <div style={{ marginBottom: '200px' }}>
-                                <Exam closeForm={this.closeForm.bind(this)} />
+                                <Exam closeForm={this.closeExam.bind(this)} />
                             </div>
                         }
                     </div>
                 </div>
-
             </div>
         )
     }

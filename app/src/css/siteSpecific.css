@@ -11,3 +11,32 @@
 .panel-button:hover h1, .panel-button:active h1, .panel-button:hover h2, .panel-button:active h2, .panel-button:hover h3, .panel-button:active h3, .panel-button:hover h4, .panel-button:active h4, .panel-button:hover h5, .panel-button:active h5, .panel-button:hover h6, .panel-button:active h6 {
     color: #fff;
 }
+
+.home-container-1 {
+    height: 90vh;
+    vertical-align: middle;
+    display: table-cell;
+}
+
+.home-child-1 {
+    display: inline-block;
+}
+
+.home-container-2 {
+    height: 120vh;
+    background-color: rgb(44, 62, 80);
+    width: 100vw;
+    position: relative;
+    left: 50%;
+    right: 50%;
+    margin-left: -50vw;
+    margin-right: -50vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.home-child-2 {
+    align-self: center;
+    width: 100vw;
+}
