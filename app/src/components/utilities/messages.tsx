@@ -10,7 +10,6 @@ export class Messages extends React.Component<any, {}> {
     }
 
     public render() {
-        console.log(this.props.message)
         return (
             this.props.message ? (
                 <div role="alert" className="alert alert-success">

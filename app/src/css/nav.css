@@ -23,3 +23,22 @@
 .navbar-logout-btn {
     margin-top: -2px;
 }
+
+.navbar-toggle {
+    border: 0px solid transparent !important;
+    border-color: transparent !important;
+    margin-top: 10px !important;
+}
+
+.navbar-toggle:hover, .navbar-toggle:focus {
+    background-color: transparent !important;
+}
+
+.navbar-collapse, .navbar-form {
+    border-color: transparent !important;
+}
+
+.navbar-collapse {
+    border-top: 0px solid transparent !important;
+    box-shadow: inset 0px 0px 0px transparent !important;
+}

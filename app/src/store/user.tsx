@@ -15,7 +15,6 @@ export const actionCreators = {
         if (process.env.REACT_APP_ENV != 'dev') {
             const response = await fetch('/getUser', { credentials: 'same-origin' })
             const user = await response.json()
-            console.log(user)
             dispatch({ type: constants.loadUser, user: user })
             return user
         } else {
