@@ -14,7 +14,7 @@ export default class Helper extends React.Component<props, any> {
         return (
             <div className='col-md-12'>
                 {this.props.correct == false &&
-                    <div style={{fontSize: '1.5em'}} className='alert alert-danger'>
+                    <div style={{fontSize: '1.2em'}} className='alert alert-danger'>
                         {this.props.examQuestion.helper}
                     </div>
                 }

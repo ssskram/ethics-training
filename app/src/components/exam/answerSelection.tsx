@@ -11,7 +11,7 @@ type props = {
 const green = {
     borderColor: '#5cb85c',
     borderWidth: '1px',
-    boxShadow: '0 2px 4px 0 #8AD38A'
+    boxShadow: '0 1px 2px 0 #8AD38A'
 }
 
 export default class Answers extends React.Component<props, any> {
@@ -27,10 +27,18 @@ export default class Answers extends React.Component<props, any> {
                         greenBorder = green
                     } else greenBorder = {}
 
-                    return <div key={key} style={greenBorder} className='col-md-6 col-md-offset-3 panel panel-button'>
-                        <div onClick={() => this.props.checkAnswer(this.props.examQuestion.correct, answer)} className='panel-body'>
-                            <h4>{answer}</h4>
+                    const clearfix = key & 1 && key != 0
+                    return <div key={key}>
+                        <div className='col-xs-12 col-sm-6'>
+                            <div className=' panel panel-button' style={greenBorder}>
+                                <div onClick={() => this.props.checkAnswer(this.props.examQuestion.correct, answer)} className='panel-body'>
+                                    <h4>{answer}</h4>
+                                </div>
+                            </div>
                         </div>
+                        {clearfix == true &&
+                            <div className="clearfix"></div>
+                        }
                     </div>
                 })}
             </div>

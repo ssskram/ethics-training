@@ -4,9 +4,9 @@ import Messages from './components/utilities/messages'
 import { connect } from 'react-redux'
 import { ApplicationState } from './store'
 import * as messages from './store/messages'
+import * as myCourses from './store/myCourses'
 import Video from './components/video'
 import Exam from './components/exam'
-import { thisTypeAnnotation } from 'babel-types';
 
 const icon = require('./images/pgh.png')
 
@@ -47,15 +47,22 @@ const thirdChild = {
 }
 
 export class Home extends React.Component<any, any> {
+
+    private ref: React.RefObject<HTMLHeadingElement>
+
     constructor(props) {
         super(props)
         this.state = {
             onExam: false
         }
+        this.ref = React.createRef()
     }
 
     componentDidMount() {
-        window.scrollTo(0, 0)
+        window.scrollTo({
+            top: 0,
+            behavior: "smooth"
+        })
     }
 
     openForm() {
@@ -63,6 +70,10 @@ export class Home extends React.Component<any, any> {
             onExam: true
         })
         this.props.clearMessage()
+        window.scrollTo({
+            top: this.ref.current.offsetTop-20,
+            behavior: "smooth"
+        })
     }
 
     closeForm() {
@@ -79,6 +90,11 @@ export class Home extends React.Component<any, any> {
         const {
             onExam
         } = this.state
+
+        let openExam
+        if (this.props.myCourses) {
+            openExam = this.props.myCourses.find(course => course.completed == false)
+        }
 
         return (
             <div className='text-center'>
@@ -100,15 +116,17 @@ export class Home extends React.Component<any, any> {
                 </div>
                 <div style={thirdContainer}>
                     <div style={thirdChild}>
-                        <h1 style={{ marginTop: '100px' }}><b>Step 2:</b><br />Complete the exam</h1>
+                        <h1 ref={this.ref} style={{ marginTop: '100px' }}><b>Step 2:</b><br />Complete the exam</h1>
                         <h4>The exam is comprised of three modules and can be saved to be completed at a later time</h4>
                         {onExam == false &&
                             <button style={{ marginBottom: '100px' }} onClick={this.openForm.bind(this)} className='btn btn-primary'>
-                                <span style={{ fontSize: '1.5em' }}>Take the exam</span>
+                                <span style={{ fontSize: '1.5em' }}>{openExam ? 'Continue the exam' : 'Take the exam'}</span>
                             </button>
                         }
                         {onExam == true &&
-                            <Exam closeForm={this.closeForm.bind(this)} />
+                            <div style={{ marginBottom: '200px' }}>
+                                <Exam closeForm={this.closeForm.bind(this)} />
+                            </div>
                         }
                     </div>
                 </div>
@@ -121,8 +139,10 @@ export class Home extends React.Component<any, any> {
 export default connect(
     (state: ApplicationState) => ({
         ...state.messages,
+        ...state.myCourses
     }),
     ({
         ...messages.actionCreators,
+        ...myCourses.actionCreators
     })
 )(Home)

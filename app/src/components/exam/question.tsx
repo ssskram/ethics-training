@@ -17,13 +17,13 @@ export default class Question extends React.Component<props, any> {
         return (
             <div className='text-center'>
                 {length <= 100 &&
-                    < h1 dangerouslySetInnerHTML={this.createMarkup()}></h1>
-                }
-                {length > 100 && length <= 300 &&
                     < h2 dangerouslySetInnerHTML={this.createMarkup()}></h2>
                 }
-                {length > 300 &&
+                {length > 100 && length <= 300 &&
                     < h3 dangerouslySetInnerHTML={this.createMarkup()}></h3>
+                }
+                {length > 300 &&
+                    < h4 dangerouslySetInnerHTML={this.createMarkup()}></h4>
                 }
             </div>
         )

@@ -141,7 +141,7 @@ export class Exam extends React.Component<props, state> {
                 <Hydrate />
             </div>
         }
-        
+
         return (
             <div className='text-center'>
                 <br />
@@ -149,18 +149,18 @@ export class Exam extends React.Component<props, state> {
                 {forwardProgress > 0 &&
                     <Line percent={forwardProgress / 24 * 100} strokeWidth="4" strokeColor="#D3D3D3" />
                 }
-                <h2><br />Module: <b>{examContent[forwardProgress].module}</b></h2>
+                <h3><br /><b>{examContent[forwardProgress].module}</b></h3>
                 <Question
+                    examQuestion={examContent[forwardProgress]}
+                />
+                <Helper
+                    correct={answerCorrect}
                     examQuestion={examContent[forwardProgress]}
                 />
                 <Answers
                     correct={answerCorrect}
                     examQuestion={examContent[forwardProgress]}
                     checkAnswer={this.checkAnswer.bind(this)}
-                />
-                <Helper
-                    correct={answerCorrect}
-                    examQuestion={examContent[forwardProgress]}
                 />
                 <DirectionalButtons
                     back={this.back.bind(this)}
