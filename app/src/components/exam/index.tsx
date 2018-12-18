@@ -1,11 +1,5 @@
 
-// when next button is clicked, post highpoint change
-// when back button is click, default answer to correct if question is less than highpoint
-// when closed and picked back up, select question by high point ID
-// if next module != this module, throw encouraging modal...or something?
-
 import * as React from 'react'
-import { Redirect } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { ApplicationState } from '../../store'
 import * as user from '../../store/user'
@@ -28,7 +22,8 @@ interface actionProps {
     newCourse: (user) => {},
     updateCourseProgress: (course, forwardProgress) => void,
     loadMyCourses: (user) => object
-    loadUser: () => object
+    loadUser: () => object,
+    closeForm: () => void
 }
 
 type props =
@@ -42,8 +37,7 @@ interface state {
     highpoint: number
     forwardProgress: number
     answerCorrect: boolean
-    activeExam: object,
-    redirect: boolean
+    activeExam: object
 }
 
 export class Exam extends React.Component<props, state> {
@@ -55,12 +49,10 @@ export class Exam extends React.Component<props, state> {
             highpoint: 0,
             forwardProgress: 0,
             answerCorrect: undefined,
-            redirect: false
         }
     }
 
     async componentDidMount() {
-        window.scrollTo(0, 0)
         if (this.props.myCourses) {
             this.searchForOpenExam(this.props.myCourses)
         }
@@ -118,9 +110,7 @@ export class Exam extends React.Component<props, state> {
         } else {
             this.props.newMessage("Congratulations! You're all finished")
             this.props.updateCourseProgress(this.state.activeExam, 100)
-            this.setState({
-                redirect: true
-            })
+            this.props.closeForm()
         }
     }
 
@@ -133,17 +123,17 @@ export class Exam extends React.Component<props, state> {
         })
     }
 
+    saveAndClose() {
+        this.props.newMessage('Your progress has been saved.')
+        this.props.closeForm()
+    }
+
     public render() {
         const {
             examContent,
             forwardProgress,
-            answerCorrect,
-            redirect
+            answerCorrect
         } = this.state
-
-        if (redirect) {
-            return <Redirect push to={'/'} />
-        }
 
         if (!this.props.myCourses) {
             return <div>
@@ -151,6 +141,7 @@ export class Exam extends React.Component<props, state> {
                 <Hydrate />
             </div>
         }
+        
         return (
             <div className='text-center'>
                 <br />
@@ -174,7 +165,7 @@ export class Exam extends React.Component<props, state> {
                 <DirectionalButtons
                     back={this.back.bind(this)}
                     examQuestion={examContent[forwardProgress]}
-                    confirmSave={this.props.newMessage.bind(this)}
+                    saveClose={this.saveAndClose.bind(this)}
                 />
             </div>
         )

@@ -10,7 +10,8 @@ type props = {
 
 const green = {
     borderColor: '#5cb85c',
-    borderWidth: '1px'
+    borderWidth: '1px',
+    boxShadow: '0 2px 4px 0 #8AD38A'
 }
 
 export default class Answers extends React.Component<props, any> {

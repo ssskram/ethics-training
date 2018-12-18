@@ -19,3 +19,7 @@
 .nav-glyphicon {
     margin-right: 10px;
 }
+
+.navbar-logout-btn {
+    margin-top: -2px;
+}

@@ -7,7 +7,8 @@ export default class Video extends React.Component<any, any> {
     public render() {
         const opts = {
             width: '100%',
-            height: '400px'
+            maxWidth: '500px',
+            height: '500px'
         }
         return (
             <div className='text-center'>
