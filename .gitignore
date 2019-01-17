@@ -13,6 +13,9 @@ logs
 results
 tmp
 
+# deployment scripts
+deploy
+
 # Optional npm cache directory
 .npm
 

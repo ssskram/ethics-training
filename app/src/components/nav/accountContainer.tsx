@@ -45,4 +45,4 @@ export default connect(
     ({
         ...user.actionCreators
     })
-)(AccountContainer)
+)(AccountContainer as any)
