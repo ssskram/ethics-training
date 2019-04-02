@@ -16,6 +16,6 @@ exports.accessDenied = (req, res) => {
 // MS oauth service redirect
 exports.auth = passport.authenticate('windowslive', {
     scope: [
-        'https://outlook.office.com/Mail.Read'
+        'https://outlook.office.com/User.Read'
     ]
 })
