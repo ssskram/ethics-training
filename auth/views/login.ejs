@@ -1,28 +1,31 @@
 <!DOCTYPE html>
 <html>
+  <% include ./partials/header %>
 
-<% include ./partials/header %>
-
-<body>
+  <body>
     <% include ./partials/loader %>
     <div class="row login">
-        <% include ./partials/flash %>
-        <div style='margin-top: 25px' class="col-md-12 text-center">
-            <img src="ip.png" class="auth-img img-responsive" />
-        </div>
-        <div class="col-xl-6 col-lg-12 text-center">
-            <a href='/auth' onclick="overlay()" class="btn btn-secondary" title="Log in using your City email">
-                I am a City of Pittsburgh employee
-            </a>
-        </div>
-        <div class="col-xl-6 col-lg-12 text-center">
-            <a href='/externalUser' onclick="overlay()" class="btn btn-secondary">
-                I am <b>not</b> a City of Pittsburgh employee
-            </a>
-        </div>
+      <% include ./partials/flash %>
+      <div style="margin-top: 25px" class="col-md-12 text-center">
+        <img src="ip.png" class="auth-img img-responsive" />
+      </div>
+      <div class="col-xl-6 col-lg-12 text-center">
+        <a
+          href="/auth"
+          onclick="overlay()"
+          class="btn btn-secondary"
+          title="Log in using your City email"
+        >
+          I am a City of Pittsburgh employee
+        </a>
+      </div>
+      <div class="col-xl-6 col-lg-12 text-center">
+        <a href="/externalUser" onclick="overlay()" class="btn btn-secondary">
+          I am <b>not</b> a City of Pittsburgh employee
+        </a>
+      </div>
     </div>
-</body>
+  </body>
 
-<% include ./partials/footer %>
-
+  <% include ./partials/footer %>
 </html>

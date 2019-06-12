@@ -1,8 +1,7 @@
-
 // reloads window at node endpoint /logout
 
 function logout() {
-    window.location.href = "/logout"
+  window.location.href = "/logout";
 }
 
-export default logout
+export default logout;

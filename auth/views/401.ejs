@@ -1,22 +1,20 @@
 <!DOCTYPE html>
 <html>
+  <% include ./partials/header %>
 
-<% include ./partials/header %>
-
-<body>
+  <body>
     <% include ./partials/loader %>
     <div class="row login">
-        <% include ./partials/flash %>
-        <div class="col-md-12 text-center">
-            <img src="ip.png" class="auth-img img-responsive" />
-        </div>
-        <div class="col-md-12 text-center">
-            <br />
-            <h1>Sorry, you don't have access to this site.</h1>
-        </div>
+      <% include ./partials/flash %>
+      <div class="col-md-12 text-center">
+        <img src="ip.png" class="auth-img img-responsive" />
+      </div>
+      <div class="col-md-12 text-center">
+        <br />
+        <h1>Sorry, you don't have access to this site.</h1>
+      </div>
     </div>
-</body>
+  </body>
 
-<% include ./partials/footer %>
-
+  <% include ./partials/footer %>
 </html>
